@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Home</title>
+		<meta th:remove="tag" th:include="commons :: common-meta" />
+		<meta th:remove="tag" th:include="commons :: common-css" />
+		<meta th:remove="tag" th:include="commons :: common-js" />
+	</head>
+	<body>
+		<!-- Header section -->
+		<div class="header-section" th:include="commons :: header-section"></div>
+
+		<!-- Menu section -->
+		<div class="menuv2" th:include="commons :: main-menu"></div>
+
+		<!-- Content section -->
+		<div>
+			<div class="container-fluid">
+				<div class="row">
+
+					<div class="col-md-12 content-area">
+						<div class="row">
+							<div class="col-md-6">
+								<!-- Section list head -->
+								<section id="data-maintenance" style="margin-top: 30px;">
+									<div class="section-header sectionbartoggle">
+										<h1>Hall Booking</h1>
+									</div>
+									<div class="section-body">
+										<form id="mainform" class="form-horizontal" method="post" th:with="df=${'E, dd-MMM-yyyy'}">
+											<div class="row">
+												<div class="form-group">
+													<label class="control-label col-md-4" for="xordernum">Booking NO. : </label>
+													<div class="col-md-8">
+														<input type="text" class="form-control">
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</section>
+							</div>
+
+						</div>
+					</div>
+
+					
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Footer section -->
+		<div class="footer-section" th:include="commons :: footer-section"></div>
+	</body>
+	
+</html>

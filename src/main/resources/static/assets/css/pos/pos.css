@@ -1,0 +1,13 @@
+.pagination-right  {
+	 
+	margin-right: 4px;
+}
+.pagination  li  a{
+	padding: 2px 13px;
+	margin-top: -2px; 
+}
+
+.pagination-left{
+	margin-top: -2px; 
+	margin-left: 4px;
+}
