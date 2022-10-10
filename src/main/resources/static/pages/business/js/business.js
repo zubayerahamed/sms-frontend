@@ -1,5 +1,4 @@
-$(document).ready(function(){
-
+function loadTableData(){
 	$.ajax({
 		url : getApiBasepath() + "/business",
 		type : 'GET',
@@ -11,11 +10,22 @@ $(document).ready(function(){
 		},
 		success : function(data) {
 			console.log({data});
-			
+
 			var t = $('.datatable').DataTable();
-			$.each(data.items, function(d, i){
-				t.row.add([d.id, d.id, d.id, d.id, d.id, ""]).draw(false);
+			t.clear().draw();
+			$.each(data.items, function(i, d){
+				t.row.add([
+					d.id, 
+					d.businessType, 
+					d.name, 
+					d.mobile, 
+					d.active, 
+					'<div class="btn-group pull-right"><button class="btn btn-xs btn-default">View</button>' + 
+					'<button class="btn btn-xs btn-primary">Edit</button>' +
+					'<button class="btn btn-xs btn-danger">Delete</button></div>'
+				]).draw(false);
 			})
+
 			
 			
 
@@ -24,5 +34,19 @@ $(document).ready(function(){
 			showMessage(status, "Something went wrong .... ");
 		}
 	});
+}
+
+$(document).ready(function(){
+
+	loadTableData();
+
+	$('.form-submit').off('click').on('click', function(e){
+		e.preventDefault();
+		
+		var data = $('#mainform').serializeArray();
+		console.log(data);
+		
+	})
+	
 
 })
