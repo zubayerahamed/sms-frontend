@@ -1,2 +1,4 @@
+server:
+  port: 8082
 api: 
   baseUrl: http://localhost:8081/sms

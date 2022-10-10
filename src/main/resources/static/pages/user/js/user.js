@@ -2,7 +2,7 @@ var tableData = [];
 
 function loadTableData(){
 	$.ajax({
-		url : getApiBasepath() + "/business",
+		url : getApiBasepath() + "/user",
 		type : 'GET',
 		dataType : 'json',
 		beforeSend: function(xhr) {
@@ -17,12 +17,27 @@ function loadTableData(){
 			var t = $('.datatable').DataTable();
 			t.clear().draw();
 			$.each(data.items, function(i, d){
+				
+				var role = "";
+				if(d.systemadmin){
+					role = "System Admin";
+				} else if (d.owner){
+					role = "Owner";
+				} else if (d.reseller){
+					role = "Reseller";
+				} else {
+					role = "Customer";
+				}
+				
 				t.row.add([
-					d.id, 
-					d.businessType, 
-					d.name, 
+					d.fullName, 
+					d.username, 
+					d.email, 
 					d.mobile, 
-					d.active, 
+					d.active,
+					d.locked,
+					d.expiryDate,
+					role,
 					'<div class="btn-group pull-right">'+
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-view">View</button>' + 
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-primary btn-edit">Edit</button>' +
@@ -82,13 +97,21 @@ function setSelectedDataToForm(selectedId){
 		}
 	})
 
-	$('#businessId').val(sObj.id);
-	$('#businessType').val(sObj.businessType);
-	$('#name').val(sObj.name);
+	$('#id').val(sObj.id);
+	$('#fullName').val(sObj.fullName);
+	$('#username').val(sObj.username);
 	$('#email').val(sObj.email);
+	$('#password').val(sObj.password);
 	$('#mobile').val(sObj.mobile);
-	$('#address').val(sObj.address);
-	$('#active').prop('checked', sObj.active);
+	$('#expiryDate').val(sObj.expiryDate);
+	
+	$('#systemadmin').prop("checked", sObj.systemadmin);
+	$('#owner').prop("checked", sObj.owner);
+	$('#reseller').prop("checked", sObj.reseller);
+	$('#customer').prop("checked", sObj.customer);
+	
+	$('#active').prop("checked", sObj.active);
+	$('#locked').prop("checked", sObj.locked);
 }
 
 function resetModal(){
@@ -108,16 +131,26 @@ function submitForm(method){
 	if(!targettedForm.smkValidate()) return;
 
 	var jsonData = {};
-	jsonData.id = $('#businessId').val();
-	jsonData.businessType = $('#businessType').val();
-	jsonData.name = $('#name').val();
+	jsonData.id = $('#id').val();
+	jsonData.fullName = $('#fullName').val();
+	jsonData.username = $('#username').val();
 	jsonData.email = $('#email').val();
+	jsonData.password = $('#password').val();
 	jsonData.mobile = $('#mobile').val();
-	jsonData.address = $('#address').val();
+	jsonData.expiryDate = $('#expiryDate').val();
+	
+	jsonData.systemadmin = $('#systemadmin').is(":checked");
+	jsonData.owner = $('#owner').is(":checked");
+	jsonData.reseller = $('#reseller').is(":checked");
+	jsonData.customer = $('#customer').is(":checked");
+	
 	jsonData.active = $('#active').is(":checked");
+	jsonData.locked = $('#locked').is(":checked");
+	
+	console.log(jsonData);
 
 	$.ajax({
-		url : getApiBasepath() + "/business",
+		url : getApiBasepath() + "/user",
 		type : method,
 		dataType : 'json',
 		data: JSON.stringify(jsonData),
@@ -127,6 +160,7 @@ function submitForm(method){
 			xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
 		},
 		success : function(data) {
+			console.log({data})
 			if(data.success){
 				if(method == 'POST'){
 					restForm();
@@ -145,7 +179,7 @@ function submitForm(method){
 function deleteData(selectedId){
 	if(confirm("Are you want to delete this item!")){
 		$.ajax({
-			url : getApiBasepath() + "/business/" + selectedId,
+			url : getApiBasepath() + "/user/" + selectedId,
 			type : 'DELETE',
 			dataType : 'json',
 			beforeSend: function(xhr) {
