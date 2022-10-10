@@ -60,16 +60,6 @@
 	<!-- Custom Theme JavaScript -->
 	<script th:src="@{/assets/js/ck-functions.js}"></script>
 	<script th:src="@{/assets/js/sb-admin-2.js}"></script>
-	
-
-	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
-	<script>
-		$(document).ready(function() {
-			$('#dataTables-example').DataTable({
-				responsive : true
-			});
-		});
-	</script>
 
 	<!-- Page-Level Demo Scripts - Notifications - Use for reference -->
 	<script>
@@ -81,12 +71,18 @@
 		// popover demo
 		$("[data-toggle=popover]").popover();
 	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			dataTableInit();
+		})
+	</script>
 </head>
 
 
 <!-- Main Menu -->
 <div th:fragment="main-menu" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<input type="hidden" id="apiBaseUrl" th:value="${apiBaseUrl}"/>
+	<input type="hidden" id="apiToken" th:value="${jsonToken}"/>
 	<a th:href="@{/}" class="basePath"></a>
 
 	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">

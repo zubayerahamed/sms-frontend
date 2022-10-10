@@ -1,5 +1,7 @@
 package com.asl.fe.controller;
 
+import java.text.SimpleDateFormat;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -13,6 +15,7 @@ import com.asl.fe.service.ASLSessionManager;
 public class AbstractController {
 
 	public static final String JSON_TOKEN = "JSON_TOKEN_KEY"; 
+	protected static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Autowired protected ASLSessionManager sessionManager;
 	@Autowired protected AppConfig appConfig;

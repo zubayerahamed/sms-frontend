@@ -16,6 +16,6 @@ public class BusinessController extends AbstractController{
 	@GetMapping
 	public String loadBusinessPage(Model model) {
 
-		return "business";
+		return "pages/business/business";
 	}
 }
