@@ -54,6 +54,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		//EnumSet.allOf(com.asl.enums.MenuProfile.class).forEach(mp -> {
 			paths.add("/business");
 			paths.add("/user");
+			paths.add("/contact");
+			paths.add("/group");
+			paths.add("/single-sms");
+			paths.add("/bulk-sms");
 		//});
 		return paths.toArray(new String[paths.size()]);
 	}

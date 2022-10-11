@@ -1,6 +1,7 @@
 var tableData = [];
 
 function loadTableData(){
+	loadingMask2.show();
 	$.ajax({
 		url : getApiBasepath() + "/business",
 		type : 'GET',
@@ -11,7 +12,7 @@ function loadTableData(){
 			xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
 		},
 		success : function(data) {
-			console.log({data});
+			loadingMask2.hide();
 
 			tableData = [];
 			var t = $('.datatable').DataTable();
@@ -22,7 +23,7 @@ function loadTableData(){
 					d.businessType, 
 					d.name, 
 					d.mobile, 
-					d.active, 
+					d.active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>', 
 					'<div class="btn-group pull-right">'+
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-view">View</button>' + 
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-primary btn-edit">Edit</button>' +
@@ -37,6 +38,7 @@ function loadTableData(){
 
 		}, 
 		error : function(jqXHR, status, errorThrown){
+			loadingMask2.hide();
 			showMessage(status, "Something went wrong .... ");
 		}
 	});
@@ -116,6 +118,7 @@ function submitForm(method){
 	jsonData.address = $('#address').val();
 	jsonData.active = $('#active').is(":checked");
 
+	loadingMask2.show();
 	$.ajax({
 		url : getApiBasepath() + "/business",
 		type : method,
@@ -127,16 +130,19 @@ function submitForm(method){
 			xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
 		},
 		success : function(data) {
+			loadingMask2.hide();
 			if(data.success){
+				showMessage('success', data.message);
 				if(method == 'POST'){
 					restForm();
 				}
 				loadTableData();
 			} else {
-				alert(data.message);
+				showMessage('error', data.message);
 			}
 		}, 
 		error : function(jqXHR, status, errorThrown){
+			loadingMask2.hide();
 			showMessage(status, "Something went wrong .... ");
 		}
 	});
@@ -144,6 +150,7 @@ function submitForm(method){
 
 function deleteData(selectedId){
 	if(confirm("Are you want to delete this item!")){
+		loadingMask2.show();
 		$.ajax({
 			url : getApiBasepath() + "/business/" + selectedId,
 			type : 'DELETE',
@@ -154,13 +161,16 @@ function deleteData(selectedId){
 				xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
 			},
 			success : function(data) {
+				loadingMask2.hide();
 				if(data.success){
+					showMessage('success', data.message);
 					loadTableData();
 				} else {
-					alert(data.message);
+					showMessage('error', data.message);
 				}
 			}, 
 			error : function(jqXHR, status, errorThrown){
+				loadingMask2.hide();
 				showMessage(status, "Something went wrong .... ");
 			}
 		});

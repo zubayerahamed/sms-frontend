@@ -69,7 +69,7 @@ function setTableButtonEvents(){
 		e.preventDefault();
 
 		$('#myModal').modal('show');
-		$('.modal-title').html("Update User");
+		$('.modal-title').html("Update Business");
 		$('.form-reset').removeClass('nodisplay');
 		$('.form-update').removeClass('nodisplay');
 		$('.form-submit').addClass('nodisplay');
@@ -118,7 +118,7 @@ function setSelectedDataToForm(selectedId){
 
 function resetModal(){
 	$('#myModal').modal('hide');
-	$('.modal-title').html("Create User");
+	$('.modal-title').html("Create Business");
 	$('.form-reset').removeClass('nodisplay');
 	$('.form-update').addClass('nodisplay');
 	$('.form-submit').removeClass('nodisplay');

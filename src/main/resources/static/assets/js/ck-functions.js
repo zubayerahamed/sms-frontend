@@ -1,3 +1,34 @@
+var loadingMask2 = {
+	show : function(){
+		$('div#loadingmask2, div.loadingdots, div#loadingdots').removeClass('nodisplay');
+	},
+	hide : function(){
+		$('div#loadingmask2, div.loadingdots, div#loadingdots').addClass('nodisplay');
+	}
+}
+
+
+
+/**
+ * Show lobi message
+ * @param type
+ * @param message
+ * @returns
+ */
+function showMessage(type, message){
+	Lobibox.notify(type, {
+		title: type,
+		pauseDelayOnHover: true,
+		continueDelayOnInactiveTab: true,
+		size: 'mini',
+		rounded: false,
+		delayIndicator: true,
+		sound: false,
+		position: 'right top',
+		msg: message
+	});
+}
+
 /**
  * Application basepath
  */
@@ -18,6 +49,8 @@ function getApiBasepath(){
 function getApiToken(){
 	return $('#apiToken').val();
 }
+
+
 
 
 /**

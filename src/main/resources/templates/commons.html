@@ -24,9 +24,242 @@
 	<link th:href="@{/assets/css/morris.css}" rel="stylesheet">
 	<!-- Custom Fonts -->
 	<link th:href="@{/assets/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/lobibox.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/smoke.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/tab-system.css}"/>
+
 	<style type="text/css">
 		.nodisplay{
 			display: none;
+		}
+
+		/*
+		=== Loading mask 2
+		*/
+		#loadingdots {
+			position: relative;
+			height: 100px;
+			width: 200px;
+			top: calc(50% - 50px);
+			left: calc(50% - 100px);
+		}
+		
+		#loadingdots_1 {
+			left: 0;
+			-moz-animation-delay: 0s;
+			-webkit-animation-delay: 0s;
+			-ms-animation-delay: 0s;
+			-o-animation-delay: 0s;
+			animation-delay: 0s;
+		}
+		
+		#loadingdots_2 {
+			left: 30px;
+			-moz-animation-delay: 0.2s;
+			-webkit-animation-delay: 0.2s;
+			-ms-animation-delay: 0.2s;
+			-o-animation-delay: 0.2s;
+			animation-delay: 0.2s;
+		}
+		
+		#loadingdots_3 {
+			left: 60px;
+			-moz-animation-delay: 0.4s;
+			-webkit-animation-delay: 0.4s;
+			-ms-animation-delay: 0.4s;
+			-o-animation-delay: 0.4s;
+			animation-delay: 0.4s;
+		}
+		
+		#loadingdots_4 {
+			left: 90px;
+			-moz-animation-delay: 0.6s;
+			-webkit-animation-delay: 0.6s;
+			-ms-animation-delay: 0.6s;
+			-o-animation-delay: 0.6s;
+			animation-delay: 0.6s;
+		}
+		
+		#loadingdots_5 {
+			left: 120px;
+			-moz-animation-delay: 0.8s;
+			-webkit-animation-delay: 0.8s;
+			-ms-animation-delay: 0.8s;
+			-o-animation-delay: 0.8s;
+			animation-delay: 0.8s;
+		}
+		#loadingdots_6 {
+			left: 150px;
+			-moz-animation-delay: 1s;
+			-webkit-animation-delay: 1s;
+			-ms-animation-delay: 1s;
+			-o-animation-delay: 1s;
+			animation-delay: 1s;
+		}
+		#loadingdots_7 {
+			left: 180px;
+			-moz-animation-delay: 1.2s;
+			-webkit-animation-delay: 1.2s;
+			-ms-animation-delay: 1.2s;
+			-o-animation-delay: 1.2s;
+			animation-delay: 1.2s;
+		}
+		
+		@-moz-keyframes bounce_loadingdots{
+			0%{
+				-moz-transform: scale(1);
+				opacity: 0.5;
+			}
+		
+			25%{
+				-moz-transform:scale(1.5);
+				opacity:1;
+			}
+		
+			50%{
+				-moz-transform:scale(1);
+				opacity: 0.5;
+			}
+		
+			100%{
+				-moz-transform:scale(1);
+				opacity: 0.5;
+			}
+		}
+		
+		@-webkit-keyframes bounce_loadingdots{
+			0%{
+				-webkit-transform:scale(1);
+				opacity: 0.5;
+			}
+		
+			25%{
+				-webkit-transform:scale(1.5);
+				opacity:1;
+			}
+		
+			50%{
+				-webkit-transform:scale(1);
+				opacity: 0.5;
+			}
+		
+			100%{
+				-webkit-transform:scale(1);
+				opacity: 0.5;
+			}
+		}
+		
+		@-ms-keyframes bounce_loadingdots{
+			0%{
+				-ms-transform:scale(1);
+				opacity: 0.5;
+			}
+		
+			25%{
+				-ms-transform:scale(1.5);
+				opacity:1;
+			}
+		
+			50%{
+				-ms-transform:scale(1);
+				opacity: 0.5;
+			}
+		
+			100%{
+				-ms-transform:scale(1);
+				opacity: 0.5;
+			}
+		}
+		
+		@-o-keyframes bounce_loadingdots{
+			0%{
+				-o-transform:scale(1);
+				opacity: 0.5;
+			}
+		
+			25%{
+				-o-transform:scale(1.5);
+				opacity:1;
+			}
+		
+			50%{
+				-o-transform:scale(1);
+				opacity: 0.5;
+			}
+		
+			100%{
+				-o-transform:scale(1);
+				opacity: 0.5;
+			}
+		}
+		
+		@keyframes bounce_loadingdots{
+			0%{
+				transform:scale(1);
+				opacity: 0.5;
+			}
+		
+			25%{
+				transform:scale(1.5);
+				opacity:1;
+			}
+		
+			50%{
+				transform:scale(1);
+				opacity: 0.5;
+			}
+		
+			100%{
+				transform:scale(1);
+				opacity: 0.5;
+			}
+		}
+		
+		.loadingdots {
+			-webkit-animation-duration: 1.5s;
+			-webkit-animation-iteration-count: infinite;
+			-webkit-animation-name: bounce_loadingdots;
+			-moz-animation-duration: 1.5s;
+			-moz-animation-iteration-count: infinite;
+			-moz-animation-name: bounce_loadingdots;
+			animation-duration: 1.5s;
+			animation-iteration-count: infinite;
+			animation-name: bounce_loadingdots;
+			background-color: #FFC40D;
+			border-radius: 5px;
+			position: absolute;
+			top: 0;
+			color: #fff; padding : 40px 5px;
+			text-align: center;
+			padding: 40px 5px;
+		}
+		
+		#loadingmask2 {
+			position: fixed;
+			top: 0;
+			left: 0;
+			background-color: rgba(255, 255, 255, 0.8);
+			width: 100%;
+			height: 100%;
+			z-index: 99999;
+		}
+		
+		
+		/*
+		=========================================
+		============ Alert style =========
+		=========================================
+		*/
+		.alert {
+			position: absolute;
+			padding: 8px 15px;
+			width: 80%; 
+			margin: 0 auto;
+			z-index: 99999;
+		}
+		.alert-dismissable .close, .alert-dismissible .close {
+			right: 0px;
 		}
 	</style>
 </head>
@@ -61,6 +294,11 @@
 	<script th:src="@{/assets/js/jquery.flot.time.js}"></script>
 	<script th:src="@{/assets/js/jquery.flot.tooltip.min.js}"></script>
 	<script th:src="@{/assets/js/flot-data.js}"></script> -->
+
+	<!-- Alert message -->
+	<script type="text/javascript" th:src="@{/assets/js/lobibox.min.js}"></script>
+	<script type="text/javascript" th:src="@{/assets/js/messageboxes.min.js}"></script>
+	<script type="text/javascript" th:src="@{/assets/js/notifications.js}"></script>
 
 	<!-- Form validator -->
 	<script type="text/javascript" th:src="@{/assets/js/smoke.js}"></script>
@@ -247,9 +485,12 @@
 			<div class="sidebar-nav navbar-collapse">
 				<ul class="nav" id="side-menu">
 					<li><a th:href="@{/home}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
-					<li><a th:href="@{/business}"><i class="fa fa-table fa-fw"></i> Business</a></li>
-					<li><a th:href="@{/user}"><i class="fa fa-table fa-fw"></i> User</a></li>
-					<li><a th:href="@{/contact}"><i class="fa fa-table fa-fw"></i> Contact</a></li>
+					<li><a th:href="@{/business}"><i class="fa fa-suitcase fa-fw"></i> Business</a></li>
+					<li><a th:href="@{/user}"><i class="fa fa-user fa-fw"></i> User</a></li>
+					<li><a th:href="@{/contact}"><i class="fa fa-child fa-fw"></i> Contact</a></li>
+					<li><a th:href="@{/group}"><i class="fa fa-users fa-fw"></i> Group</a></li>
+					<li><a th:href="@{/single-sms}"><i class="fa fa-comment fa-fw"></i> Single SMS</a></li>
+					<li><a th:href="@{/bulk-sms}"><i class="fa fa-wechat fa-fw"></i> Bulk SMS</a></li>
 				</ul>
 			</div>
 			<!-- /.sidebar-collapse -->
