@@ -3,7 +3,7 @@ var tableData = [];
 function loadTableData(){
 	loadingMask2.show();
 	$.ajax({
-		url : getApiBasepath() + "/user",
+		url : getApiBasepath() + "/group",
 		type : 'GET',
 		dataType : 'json',
 		beforeSend: function(xhr) {
@@ -19,26 +19,10 @@ function loadTableData(){
 			t.clear().draw();
 			$.each(data.items, function(i, d){
 				
-				var role = "";
-				if(d.systemadmin){
-					role = "System Admin";
-				} else if (d.owner){
-					role = "Owner";
-				} else if (d.reseller){
-					role = "Reseller";
-				} else {
-					role = "Customer";
-				}
-				
 				t.row.add([
-					d.fullName, 
-					d.username, 
-					d.email, 
-					d.mobile, 
-					d.active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>', 
-					d.locked ? '<span class="label label-danger">Locked</span>' : '<span class="label label-success">Unlocked</span>', 
-					d.expiryDate,
-					role,
+					d.name, 
+					d.active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>',
+					'',
 					'<div class="btn-group pull-right">'+
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-view">View</button>' + 
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-primary btn-edit">Edit</button>' +
@@ -69,7 +53,7 @@ function setTableButtonEvents(){
 		e.preventDefault();
 
 		$('#myModal').modal('show');
-		$('.modal-title').html("Update Business");
+		$('.modal-title').html("Update Group");
 		$('.form-reset').removeClass('nodisplay');
 		$('.form-update').removeClass('nodisplay');
 		$('.form-submit').addClass('nodisplay');
@@ -81,7 +65,7 @@ function setTableButtonEvents(){
 		e.preventDefault();
 
 		$('#myModal').modal('show');
-		$('.modal-title').html("Business");
+		$('.modal-title').html("Group");
 		$('.form-update').addClass('nodisplay');
 		$('.form-submit').addClass('nodisplay');
 		$('.form-reset').addClass('nodisplay');
@@ -100,25 +84,14 @@ function setSelectedDataToForm(selectedId){
 	})
 
 	$('#id').val(sObj.id);
-	$('#fullName').val(sObj.fullName);
-	$('#username').val(sObj.username);
-	$('#email').val(sObj.email);
-	$('#password').val(sObj.password);
-	$('#mobile').val(sObj.mobile);
-	$('#expiryDate').val(sObj.expiryDate);
-	
-	$('#systemadmin').prop("checked", sObj.systemadmin);
-	$('#owner').prop("checked", sObj.owner);
-	$('#reseller').prop("checked", sObj.reseller);
-	$('#customer').prop("checked", sObj.customer);
-	
+	$('#name').val(sObj.name);
+
 	$('#active').prop("checked", sObj.active);
-	$('#locked').prop("checked", sObj.locked);
 }
 
 function resetModal(){
 	$('#myModal').modal('hide');
-	$('.modal-title').html("Create Business");
+	$('.modal-title').html("Create Group");
 	$('.form-reset').removeClass('nodisplay');
 	$('.form-update').addClass('nodisplay');
 	$('.form-submit').removeClass('nodisplay');
@@ -134,26 +107,14 @@ function submitForm(method){
 
 	var jsonData = {};
 	jsonData.id = $('#id').val();
-	jsonData.fullName = $('#fullName').val();
-	jsonData.username = $('#username').val();
-	jsonData.email = $('#email').val();
-	jsonData.password = $('#password').val();
-	jsonData.mobile = $('#mobile').val();
-	jsonData.expiryDate = $('#expiryDate').val();
-	
-	jsonData.systemadmin = $('#systemadmin').is(":checked");
-	jsonData.owner = $('#owner').is(":checked");
-	jsonData.reseller = $('#reseller').is(":checked");
-	jsonData.customer = $('#customer').is(":checked");
-	
+	jsonData.name = $('#name').val();
 	jsonData.active = $('#active').is(":checked");
-	jsonData.locked = $('#locked').is(":checked");
-	
+
 	console.log(jsonData);
 
 	loadingMask2.show();
 	$.ajax({
-		url : getApiBasepath() + "/user",
+		url : getApiBasepath() + "/group",
 		type : method,
 		dataType : 'json',
 		data: JSON.stringify(jsonData),
@@ -186,7 +147,7 @@ function deleteData(selectedId){
 	if(confirm("Are you want to delete this item!")){
 		loadingMask2.show();
 		$.ajax({
-			url : getApiBasepath() + "/user/" + selectedId,
+			url : getApiBasepath() + "/group/" + selectedId,
 			type : 'DELETE',
 			dataType : 'json',
 			beforeSend: function(xhr) {
