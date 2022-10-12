@@ -1,5 +1,6 @@
 var tableData = [];
 var contactData = [];
+var selectedContactData = [];
 
 function loadTableData(){
 	loadingMask2.show();
@@ -77,7 +78,7 @@ function loadContactTableData(){
 				contactData.push(d);
 			})
 
-			//setTableButtonEvents();
+			setContactSelectButtonEvents();
 
 		}, 
 		error : function(jqXHR, status, errorThrown){
@@ -85,6 +86,16 @@ function loadContactTableData(){
 			showMessage(status, "Something went wrong .... ");
 		}
 	});
+}
+
+function setContactSelectButtonEvents(){
+	$('.btn-select').off('click').on('click', function(e){
+		e.preventDefault();
+		selectedContactData.push($(this).data('id'));
+		$(this).removeClass('btn-default');
+		$(this).addClass('btn-success');
+		$(this).attr('disabled','disabled');
+	})
 }
 
 function setTableButtonEvents(){
