@@ -56,6 +56,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			paths.add("/user");
 			paths.add("/contact");
 			paths.add("/group");
+			paths.add("/template");
 			paths.add("/single-sms");
 			paths.add("/bulk-sms");
 		//});

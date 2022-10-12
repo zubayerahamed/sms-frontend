@@ -1,10 +1,9 @@
 var tableData = [];
-var contactData = [];
 
 function loadTableData(){
 	loadingMask2.show();
 	$.ajax({
-		url : getApiBasepath() + "/group",
+		url : getApiBasepath() + "/template",
 		type : 'GET',
 		dataType : 'json',
 		beforeSend: function(xhr) {
@@ -14,17 +13,15 @@ function loadTableData(){
 		},
 		success : function(data) {
 			loadingMask2.hide();
-			console.log({data});
 
 			tableData = [];
-			var t = $('.group-table').DataTable();
+			var t = $('.datatable').DataTable();
 			t.clear().draw();
 			$.each(data.items, function(i, d){
-				
 				t.row.add([
 					d.name, 
-					d.active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>',
-					'',
+					d.content, 
+					d.active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>', 
 					'<div class="btn-group pull-right">'+
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-view">View</button>' + 
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-primary btn-edit">Edit</button>' +
@@ -45,48 +42,6 @@ function loadTableData(){
 	});
 }
 
-function loadContactTableData(){
-	loadingMask2.show();
-	$.ajax({
-		url : getApiBasepath() + "/contact",
-		type : 'GET',
-		dataType : 'json',
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-			xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
-		},
-		success : function(data) {
-			loadingMask2.hide();
-			console.log({data});
-
-			contactData = [];
-			var t = $('.contact-table').DataTable();
-			t.clear().draw();
-			$.each(data.items, function(i, d){
-				
-				t.row.add([
-					d.name, 
-					d.mobile,
-					d.active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>',
-					'<div class="btn-group pull-right">'+
-						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-select">Select</button>' + 
-					'</div>'
-				]).draw(false);
-
-				contactData.push(d);
-			})
-
-			//setTableButtonEvents();
-
-		}, 
-		error : function(jqXHR, status, errorThrown){
-			loadingMask2.hide();
-			showMessage(status, "Something went wrong .... ");
-		}
-	});
-}
-
 function setTableButtonEvents(){
 	$('.btn-delete').off('click').on('click', function(e){
 		e.preventDefault();
@@ -97,7 +52,7 @@ function setTableButtonEvents(){
 		e.preventDefault();
 
 		$('#myModal').modal('show');
-		$('.modal-title').html("Update Group");
+		$('.modal-title').html("Update Template");
 		$('.form-reset').removeClass('nodisplay');
 		$('.form-update').removeClass('nodisplay');
 		$('.form-submit').addClass('nodisplay');
@@ -109,7 +64,7 @@ function setTableButtonEvents(){
 		e.preventDefault();
 
 		$('#myModal').modal('show');
-		$('.modal-title').html("Group");
+		$('.modal-title').html("SMS Template");
 		$('.form-update').addClass('nodisplay');
 		$('.form-submit').addClass('nodisplay');
 		$('.form-reset').addClass('nodisplay');
@@ -128,14 +83,15 @@ function setSelectedDataToForm(selectedId){
 	})
 
 	$('#id').val(sObj.id);
-	$('#name').val(sObj.name);
+	$('#name').val(sObj.name)
+	$('#content').val(sObj.content);
 
 	$('#active').prop("checked", sObj.active);
 }
 
 function resetModal(){
 	$('#myModal').modal('hide');
-	$('.modal-title').html("Create Group");
+	$('.modal-title').html("Create Template");
 	$('.form-reset').removeClass('nodisplay');
 	$('.form-update').addClass('nodisplay');
 	$('.form-submit').removeClass('nodisplay');
@@ -152,13 +108,14 @@ function submitForm(method){
 	var jsonData = {};
 	jsonData.id = $('#id').val();
 	jsonData.name = $('#name').val();
+	jsonData.content = $('#content').val();
 	jsonData.active = $('#active').is(":checked");
-
+	
 	console.log(jsonData);
 
 	loadingMask2.show();
 	$.ajax({
-		url : getApiBasepath() + "/group",
+		url : getApiBasepath() + "/template",
 		type : method,
 		dataType : 'json',
 		data: JSON.stringify(jsonData),
@@ -191,7 +148,7 @@ function deleteData(selectedId){
 	if(confirm("Are you want to delete this item!")){
 		loadingMask2.show();
 		$.ajax({
-			url : getApiBasepath() + "/group/" + selectedId,
+			url : getApiBasepath() + "/template/" + selectedId,
 			type : 'DELETE',
 			dataType : 'json',
 			beforeSend: function(xhr) {
@@ -219,7 +176,6 @@ function deleteData(selectedId){
 $(document).ready(function(){
 
 	loadTableData();
-	loadContactTableData();
 
 	$('.modal-close').off('click').on('click', function(e){
 		e.preventDefault();
