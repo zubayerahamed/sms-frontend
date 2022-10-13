@@ -32,7 +32,7 @@ function loadTableData(){
 				}
 			})
 
-			setTableButtonEvents();
+			setTableButtonEvents(t);
 
 		}, 
 		error : function(jqXHR, status, errorThrown){
@@ -73,7 +73,7 @@ function loadTemplateTableData(){
 				}
 			})
 
-			setTemplateTableButtonEvents();
+			setTemplateTableButtonEvents(t);
 
 		}, 
 		error : function(jqXHR, status, errorThrown){
@@ -83,22 +83,28 @@ function loadTemplateTableData(){
 	});
 }
 
-function setTableButtonEvents(){
-	$('.btn-select').off('click').on('click', function(e){
-		e.preventDefault();
+function setTableButtonEvents(table){
+	table.rows().every(function(index, element) {
+		var row = $(this.node());
+		$(row).find('button.btn-select').off('click').on('click', function(e){
+			e.preventDefault();
 
-		$('#myModal').modal('hide');
-		$('#mobile').val($(this).data('mobile'));
-	})
+			$('#myModal').modal('hide');
+			$('#mobile').val($(this).data('mobile'));
+		})
+	});
 }
 
-function setTemplateTableButtonEvents(){
-	$('.btn-template-select').off('click').on('click', function(e){
-		e.preventDefault();
+function setTemplateTableButtonEvents(table){
+	table.rows().every(function(index, element) {
+		var row = $(this.node());
+		$(row).find('button.btn-template-select').off('click').on('click', function(e){
+			e.preventDefault();
 
-		$('#templateModal').modal('hide');
-		$('#content').val($(this).data('content'));
-	})
+			$('#templateModal').modal('hide');
+			$('#content').val($(this).data('content'));
+		})
+	});
 }
 
 function restForm(){

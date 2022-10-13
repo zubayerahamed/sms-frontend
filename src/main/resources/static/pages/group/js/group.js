@@ -65,20 +65,19 @@ function loadContactTableData(){
 			var t = $('.contact-table').DataTable();
 			t.clear().draw();
 			$.each(data.items, function(i, d){
-				
+
 				t.row.add([
 					d.name, 
 					d.mobile,
 					d.active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>',
-					'<div class="btn-group pull-right">'+
-						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-select">Select</button>' + 
-					'</div>'
+					'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-select pull-right">Select</button>'
 				]).draw(false);
 
 				contactData.push(d);
+
 			})
 
-			setContactSelectButtonEvents();
+			setContactSelectButtonEvents(t);
 
 		}, 
 		error : function(jqXHR, status, errorThrown){
@@ -88,14 +87,33 @@ function loadContactTableData(){
 	});
 }
 
-function setContactSelectButtonEvents(){
-	$('.btn-select').off('click').on('click', function(e){
-		e.preventDefault();
-		selectedContactData.push($(this).data('id'));
-		$(this).removeClass('btn-default');
-		$(this).addClass('btn-success');
-		$(this).attr('disabled','disabled');
-	})
+function setContactSelectButtonEvents(table){
+	table.rows().every(function(index, element) {
+		var row = $(this.node());
+		$(row).find('button.btn-select').off('click').on('click', function(e){
+			e.preventDefault();
+
+			if($(this).html() == "Selected"){
+				$(this).addClass('btn-default');
+				$(this).html("Select");
+				$(this).removeClass('btn-success');
+
+				for( var i = 0; i < selectedContactData.length; i++){ 
+					if ( selectedContactData[i] === $(this).data('id')) { 
+						selectedContactData.splice(i, 1); 
+					}
+				}
+
+			} else {
+				$(this).removeClass('btn-default');
+				$(this).html("Selected");
+				$(this).addClass('btn-success');
+
+				selectedContactData.push($(this).data('id'));
+			}
+
+		})
+	});
 }
 
 function setTableButtonEvents(){
@@ -164,8 +182,17 @@ function submitForm(method){
 	jsonData.id = $('#id').val();
 	jsonData.name = $('#name').val();
 	jsonData.active = $('#active').is(":checked");
+	jsonData.contacts = [];
+	
+	$.each(selectedContactData, function(i, d){
+		jsonData.contacts.push({
+			'id': d
+		});
+	})
 
 	console.log(jsonData);
+	
+	return;
 
 	loadingMask2.show();
 	$.ajax({
