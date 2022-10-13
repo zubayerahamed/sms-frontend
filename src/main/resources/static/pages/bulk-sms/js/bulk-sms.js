@@ -1,9 +1,10 @@
 var tableData = [];
+var templateData = [];
 
 function loadTableData(){
 	loadingMask2.show();
 	$.ajax({
-		url : getApiBasepath() + "/user",
+		url : getApiBasepath() + "/group",
 		type : 'GET',
 		dataType : 'json',
 		beforeSend: function(xhr) {
@@ -15,41 +16,23 @@ function loadTableData(){
 			loadingMask2.hide();
 
 			tableData = [];
-			var t = $('.datatable').DataTable();
+			var t = $('.contact-table').DataTable();
 			t.clear().draw();
 			$.each(data.items, function(i, d){
-				
-				var role = "";
-				if(d.systemadmin){
-					role = "System Admin";
-				} else if (d.owner){
-					role = "Owner";
-				} else if (d.reseller){
-					role = "Reseller";
-				} else {
-					role = "Customer";
+				if(d.active) {
+					t.row.add([
+						d.name, 
+						d.totalContacts, 
+						'<div class="btn-group pull-right">'+
+							'<button data-mobile="'+ d.mobile +'" class="btn btn-xs btn-default btn-select">Select</button>' +
+						'</div>'
+					]).draw(false);
+	
+					tableData.push(d);
 				}
-				
-				t.row.add([
-					d.fullName, 
-					d.username, 
-					d.email, 
-					d.mobile, 
-					d.active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>', 
-					d.locked ? '<span class="label label-danger">Locked</span>' : '<span class="label label-success">Unlocked</span>', 
-					d.expiryDate,
-					role,
-					'<div class="btn-group pull-right">'+
-						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-view">View</button>' + 
-						'<button data-id="'+ d.id +'" class="btn btn-xs btn-primary btn-edit">Edit</button>' +
-						'<button data-id="'+ d.id +'" class="btn btn-xs btn-danger btn-delete">Delete</button>'+
-					'</div>'
-				]).draw(false);
-
-				tableData.push(d);
 			})
 
-			setTableButtonEvents();
+			setTableButtonEvents(t);
 
 		}, 
 		error : function(jqXHR, status, errorThrown){
@@ -59,69 +42,69 @@ function loadTableData(){
 	});
 }
 
-function setTableButtonEvents(){
-	$('.btn-delete').off('click').on('click', function(e){
-		e.preventDefault();
-		deleteData($(this).data('id'));
-	})
+function loadTemplateTableData(){
+	loadingMask2.show();
+	$.ajax({
+		url : getApiBasepath() + "/template",
+		type : 'GET',
+		dataType : 'json',
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
+		},
+		success : function(data) {
+			loadingMask2.hide();
 
-	$('.btn-edit').off('click').on('click', function(e){
-		e.preventDefault();
+			templateData = [];
+			var t = $('.template-table').DataTable();
+			t.clear().draw();
+			$.each(data.items, function(i, d){
+				if(d.active) {
+					t.row.add([
+						d.name, 
+						d.content, 
+						'<div class="btn-group pull-right">'+
+							'<button data-content="'+ d.content +'" class="btn btn-xs btn-default btn-template-select">Select</button>' +
+						'</div>'
+					]).draw(false);
 
-		$('#myModal').modal('show');
-		$('.modal-title').html("Update Business");
-		$('.form-reset').removeClass('nodisplay');
-		$('.form-update').removeClass('nodisplay');
-		$('.form-submit').addClass('nodisplay');
+					templateData.push(d);
+				}
+			})
 
-		setSelectedDataToForm($(this).data('id'));
-	})
+			setTemplateTableButtonEvents(t);
 
-	$('.btn-view').off('click').on('click', function(e){
-		e.preventDefault();
-
-		$('#myModal').modal('show');
-		$('.modal-title').html("Business");
-		$('.form-update').addClass('nodisplay');
-		$('.form-submit').addClass('nodisplay');
-		$('.form-reset').addClass('nodisplay');
-
-		setSelectedDataToForm($(this).data('id'));
-	})
-}
-
-
-function setSelectedDataToForm(selectedId){
-	var sObj = {};
-	$.each(tableData, function(i, d){
-		if(d.id == selectedId){
-			sObj = d;
+		}, 
+		error : function(jqXHR, status, errorThrown){
+			loadingMask2.hide();
+			showMessage(status, "Something went wrong .... ");
 		}
-	})
-
-	$('#id').val(sObj.id);
-	$('#fullName').val(sObj.fullName);
-	$('#username').val(sObj.username);
-	$('#email').val(sObj.email);
-	$('#password').val(sObj.password);
-	$('#mobile').val(sObj.mobile);
-	$('#expiryDate').val(sObj.expiryDate);
-	
-	$('#systemadmin').prop("checked", sObj.systemadmin);
-	$('#owner').prop("checked", sObj.owner);
-	$('#reseller').prop("checked", sObj.reseller);
-	$('#customer').prop("checked", sObj.customer);
-	
-	$('#active').prop("checked", sObj.active);
-	$('#locked').prop("checked", sObj.locked);
+	});
 }
 
-function resetModal(){
-	$('#myModal').modal('hide');
-	$('.modal-title').html("Create Business");
-	$('.form-reset').removeClass('nodisplay');
-	$('.form-update').addClass('nodisplay');
-	$('.form-submit').removeClass('nodisplay');
+function setTableButtonEvents(table){
+	table.rows().every(function(index, element) {
+		var row = $(this.node());
+		$(row).find('button.btn-select').off('click').on('click', function(e){
+			e.preventDefault();
+
+			$('#myModal').modal('hide');
+			$('#mobile').val($(this).data('mobile'));
+		})
+	});
+}
+
+function setTemplateTableButtonEvents(table){
+	table.rows().every(function(index, element) {
+		var row = $(this.node());
+		$(row).find('button.btn-template-select').off('click').on('click', function(e){
+			e.preventDefault();
+
+			$('#templateModal').modal('hide');
+			$('#content').val($(this).data('content'));
+		})
+	});
 }
 
 function restForm(){
@@ -133,27 +116,16 @@ function submitForm(method){
 	if(!targettedForm.smkValidate()) return;
 
 	var jsonData = {};
-	jsonData.id = $('#id').val();
-	jsonData.fullName = $('#fullName').val();
-	jsonData.username = $('#username').val();
-	jsonData.email = $('#email').val();
-	jsonData.password = $('#password').val();
 	jsonData.mobile = $('#mobile').val();
-	jsonData.expiryDate = $('#expiryDate').val();
-	
-	jsonData.systemadmin = $('#systemadmin').is(":checked");
-	jsonData.owner = $('#owner').is(":checked");
-	jsonData.reseller = $('#reseller').is(":checked");
-	jsonData.customer = $('#customer').is(":checked");
-	
-	jsonData.active = $('#active').is(":checked");
-	jsonData.locked = $('#locked').is(":checked");
-	
+	jsonData.content = $('#content').val();
+	jsonData.singleSms = true;
+	jsonData.language = $('#language').is(":checked") ? 'BANGLA' : 'ENGLISH';
+
 	console.log(jsonData);
 
 	loadingMask2.show();
 	$.ajax({
-		url : getApiBasepath() + "/user",
+		url : getApiBasepath() + "/sendsms",
 		type : method,
 		dataType : 'json',
 		data: JSON.stringify(jsonData),
@@ -167,10 +139,7 @@ function submitForm(method){
 			//console.log({data})
 			if(data.success){
 				showMessage('success', data.message);
-				if(method == 'POST'){
-					restForm();
-				}
-				loadTableData();
+				restForm();
 			} else {
 				showMessage('error', data.message);
 			}
@@ -182,43 +151,19 @@ function submitForm(method){
 	});
 }
 
-function deleteData(selectedId){
-	if(confirm("Are you want to delete this item!")){
-		loadingMask2.show();
-		$.ajax({
-			url : getApiBasepath() + "/user/" + selectedId,
-			type : 'DELETE',
-			dataType : 'json',
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-				xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
-			},
-			success : function(data) {
-				loadingMask2.hide();
-				if(data.success){
-					showMessage('success', data.message);
-					loadTableData();
-				} else {
-					showMessage('error', data.message);
-				}
-			}, 
-			error : function(jqXHR, status, errorThrown){
-				loadingMask2.hide();
-				showMessage(status, "Something went wrong .... ");
-			}
-		});
-	}
-}
 
 $(document).ready(function(){
 
 	loadTableData();
+	loadTemplateTableData();
 
 	$('.modal-close').off('click').on('click', function(e){
 		e.preventDefault();
-		resetModal();
-		restForm();
+		$('#myModal').modal('hide');
+	})
+	$('.template-modal-close').off('click').on('click', function(e){
+		e.preventDefault();
+		$('#templateModal').modal('hide');
 	})
 
 	// reset form
@@ -233,10 +178,13 @@ $(document).ready(function(){
 		submitForm('POST');
 	})
 
-	// update form
-	$('.form-update').off('click').on('click', function(e){
+	$('.contact-modal').off('click').on('click', function(e){
 		e.preventDefault();
-		submitForm('PUT');
+		$('#myModal').modal('show');
+	})
+	$('.template-modal').off('click').on('click', function(e){
+		e.preventDefault();
+		$('#templateModal').modal('show');
 	})
 
 })

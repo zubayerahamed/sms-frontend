@@ -34,7 +34,7 @@ function loadTableData(){
 				tableData.push(d);
 			})
 
-			setTableButtonEvents();
+			setTableButtonEvents(t);
 
 		}, 
 		error : function(jqXHR, status, errorThrown){
@@ -44,35 +44,41 @@ function loadTableData(){
 	});
 }
 
-function setTableButtonEvents(){
-	$('.btn-delete').off('click').on('click', function(e){
-		e.preventDefault();
-		deleteData($(this).data('id'));
-	})
+function setTableButtonEvents(table){
+	table.rows().every(function(index, element) {
+		var row = $(this.node());
 
-	$('.btn-edit').off('click').on('click', function(e){
-		e.preventDefault();
+		$(row).find('.btn-delete').off('click').on('click', function(e){
+			e.preventDefault();
+			deleteData($(this).data('id'));
+		})
 
-		$('#myModal').modal('show');
-		$('.modal-title').html("Update Business");
-		$('.form-reset').removeClass('nodisplay');
-		$('.form-update').removeClass('nodisplay');
-		$('.form-submit').addClass('nodisplay');
+		$(row).find('.btn-edit').off('click').on('click', function(e){
+			e.preventDefault();
 
-		setSelectedDataToForm($(this).data('id'));
-	})
+			$('#myModal').modal('show');
+			$('.modal-title').html("Update Business");
+			$('.form-reset').removeClass('nodisplay');
+			$('.form-update').removeClass('nodisplay');
+			$('.form-submit').addClass('nodisplay');
 
-	$('.btn-view').off('click').on('click', function(e){
-		e.preventDefault();
+			setSelectedDataToForm($(this).data('id'));
+		})
 
-		$('#myModal').modal('show');
-		$('.modal-title').html("Business");
-		$('.form-update').addClass('nodisplay');
-		$('.form-submit').addClass('nodisplay');
-		$('.form-reset').addClass('nodisplay');
+		$(row).find('.btn-view').off('click').on('click', function(e){
+			e.preventDefault();
 
-		setSelectedDataToForm($(this).data('id'));
-	})
+			$('#myModal').modal('show');
+			$('.modal-title').html("Business");
+			$('.form-update').addClass('nodisplay');
+			$('.form-submit').addClass('nodisplay');
+			$('.form-reset').addClass('nodisplay');
+
+			setSelectedDataToForm($(this).data('id'));
+		})
+
+	});
+
 }
 
 

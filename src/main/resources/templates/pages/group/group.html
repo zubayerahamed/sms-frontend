@@ -30,7 +30,7 @@
 							<div class="panel-heading">
 								<div class="row">
 									<div class="col-md-12">
-									Contacts Group List <button class="btn btn-xs btn-success pull-right" data-toggle="modal" data-target="#myModal">Add</button>
+									Contacts Group List <button class="btn btn-xs btn-success pull-right btn-add-group">Add</button>
 									</div>
 								</div>
 							</div>
@@ -85,8 +85,14 @@
 							<div class="checkbox">
 								<label><input type="checkbox" id="active" name="active"> Active?</label>
 							</div>
+							
 						</form>
+						<div class="checkbox">
+							<label><input type="checkbox" id="select-all-contacts"> Select all contacts from below list</label>
+						</div>
+
 						<hr/>
+
 						<h3 class="text-center">Select Contacts from List</h3>
 						<table width="100%" class="table table-striped table-bordered table-hover contact-table datatable">
 							<thead>
