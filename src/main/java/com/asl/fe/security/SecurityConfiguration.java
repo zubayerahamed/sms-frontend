@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -17,16 +17,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * @author Zubayer Ahamed
  * @since Oct 13, 2022
  */
-@SuppressWarnings("deprecation")
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired private UserDetailsService userDetailsService;
-
-	@Bean
-	public static NoOpPasswordEncoder passwordEncoder() {
-		return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-	}
+	@Autowired private BCryptPasswordEncoder passwordEncoder;
 
 	@Bean
 	public LogoutSuccessHandler logoutSuccessHandler() {
@@ -36,7 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService)
-			.passwordEncoder(passwordEncoder());
+			.passwordEncoder(passwordEncoder);
 	}
 
 	@Override
@@ -44,13 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 			.authorizeRequests()
 				.antMatchers(
-					"/",
-					"/mapper/**",
-					"/assets/**",
-					"/business",
-					"/login/fakelogin",
-					"/login-assets/**",
-					"/clearlogincache"
+						"/assets/**"
 					).permitAll()
 				.anyRequest().authenticated()
 			.and()

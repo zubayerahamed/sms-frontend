@@ -16,12 +16,16 @@ import org.springframework.web.client.RestTemplate;
 import com.asl.fe.config.AppConfig;
 import com.asl.fe.model.AuthenticationRequest;
 import com.asl.fe.model.AuthenticationResponseDTO;
-import com.asl.fe.model.Response;
+import com.asl.fe.model.MyUserDetail;
+import com.asl.fe.model.User;
 import com.asl.fe.service.ASLSessionManager;
+import com.asl.fe.util.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -37,6 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired private AppConfig appConfig;
 	@Autowired private ASLSessionManager sessionManager;
+	@Autowired private JwtUtil jwtUtil;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -65,21 +70,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		String responseBody = response.getBody();
 		if(StringUtils.isBlank(responseBody)) throw  new UsernameNotFoundException("User not found");
 
+		String authToken = "";
 		ObjectMapper obm = new ObjectMapper();
 		obm.setDateFormat(sdf);
 		obm.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		try {
-			@SuppressWarnings("unchecked")
-			Response<AuthenticationResponseDTO> c = obm.readValue(responseBody, Response.class);
-			sessionManager.addToMap(JSON_TOKEN, c.getObj().getToken());
+			JsonNode rootNode = obm.readTree(responseBody);
+			JsonNode itemsNode = rootNode.get("obj");
+			AuthenticationResponseDTO ares = obm.readValue(itemsNode.toString(), AuthenticationResponseDTO.class);
+			if(ares == null) throw  new UsernameNotFoundException("User not found");
+			authToken = ares.getToken();
+			sessionManager.addToMap(JSON_TOKEN, authToken);
 		} catch (JsonProcessingException e) {
 			log.error("Error is : {}, {}", e.getMessage(), e);
 		}
 
 		// extract all user details from token and make user details and session expiry
-		
-		return null;
-	}
+		Claims cl = jwtUtil.extractAllClaims(authToken);
+		User user = obm.convertValue(cl.get("userDetails"), User.class);
 
-	
+		return new MyUserDetail(user);
+	}
 }
