@@ -24,7 +24,6 @@ public class SimpleAuthenticationFilter extends UsernamePasswordAuthenticationFi
 	private UsernamePasswordAuthenticationToken getAuthRequest(HttpServletRequest request) {
 		String username = obtainUsername(request);
 		String password = obtainPassword(request);
-		String businessid = request.getParameter("zid");
-		return new UsernamePasswordAuthenticationToken(username + "|" + businessid, password);
+		return new UsernamePasswordAuthenticationToken(username + "|" + password, password);
 	}
 }

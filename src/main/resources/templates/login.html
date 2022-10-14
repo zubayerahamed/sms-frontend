@@ -39,7 +39,7 @@
 						</h2>
 					</div>
 					<div class="panel-body">
-						<form role="form">
+						<form role="form" th:action="@{/login}" method="post" autocomplete="off">
 							<fieldset>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span> 
@@ -72,7 +72,7 @@
 	<!-- Custom Theme JavaScript -->
 	<script th:src="@{/assets/js/sb-admin-2.js}"></script>
 
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 		$(document).ready(function(){
 
 			$('.login-btn').off('click').on('click', function(e){
@@ -109,7 +109,7 @@
 			})
 
 		})
-	</script>
+	</script> -->
 </body>
 
 </html>
