@@ -70,7 +70,7 @@ function dataTableInit(){
 				"targets": noSortColumns,
 				"orderable": false
 			}],
-			"responsive": true,
+			//"responsive": true,
 			"aaSorting": []
 		});
 

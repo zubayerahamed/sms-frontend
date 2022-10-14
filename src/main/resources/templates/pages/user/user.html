@@ -35,8 +35,8 @@
 								</div>
 							</div>
 							<!-- /.panel-heading -->
-							<div class="panel-body">
-								<table width="100%" class="table table-striped table-bordered table-hover datatable">
+							<div class="panel-body" style="overflow: auto;">
+								<table width="100%" class="table table-striped table-bordered table-hover datatable nowrap">
 									<thead>
 										<tr>
 											<th>Full Name</th>
@@ -47,7 +47,7 @@
 											<th>Locked</th>
 											<th>Expiry Date</th>
 											<th>Role</th>
-											<th data-nosort="Y" class="text-right" style="width: 140px;">Action</th>
+											<th data-nosort="Y" class="text-right" style="min-width: 140px;">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -110,16 +110,16 @@
 							
 							<div class="form-group">
 								<label for="expiryDate">Role:</label> 
-								<div class="checkbox">
+								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN')">
 									<label><input type="checkbox" id="systemadmin" name="systemadmin"> System Admin?</label>
 								</div>
-								<div class="checkbox">
+								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER')">
 									<label><input type="checkbox" id="owner" name="owner"> Owner?</label>
 								</div>
-								<div class="checkbox">
+								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER')">
 									<label><input type="checkbox" id="reseller" name="reseller"> Resellter?</label>
 								</div>
-								<div class="checkbox">
+								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER', 'ROLE_RESELLER')">
 									<label><input type="checkbox" id="customer" name="customer"> Customer?</label>
 								</div>
 							</div>
