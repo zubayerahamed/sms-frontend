@@ -113,7 +113,7 @@
 								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN')">
 									<label><input type="checkbox" id="systemadmin" name="systemadmin"> System Admin?</label>
 								</div>
-								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER')">
+								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN')">
 									<label><input type="checkbox" id="owner" name="owner"> Owner?</label>
 								</div>
 								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER')">
