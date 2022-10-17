@@ -1,4 +1,5 @@
 var tableData = [];
+var resellerData = [];
 
 function loadTableData(){
 	loadingMask2.show();
@@ -50,6 +51,38 @@ function loadTableData(){
 			})
 
 			setTableButtonEvents(t);
+
+		}, 
+		error : function(jqXHR, status, errorThrown){
+			loadingMask2.hide();
+			showMessage(status, "Something went wrong .... ");
+		}
+	});
+}
+
+function loadAvailableResellerBusinessData(){
+	loadingMask2.show();
+	$.ajax({
+		url : getApiBasepath() + "/business/available/resellers",
+		type : 'GET',
+		dataType : 'json',
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
+		},
+		success : function(data) {
+			loadingMask2.hide();
+
+			resellerData = [];
+			var mySelect = $('#resellerBusiness');
+			mySelect.empty();
+			$.each(data.items, function(i, d){
+				mySelect.append(
+						$('<option></option>').val(d.id).html(d.name)
+				);
+				resellerData.push(d);
+			})
 
 		}, 
 		error : function(jqXHR, status, errorThrown){
@@ -145,6 +178,7 @@ function submitForm(method){
 	jsonData.password = $('#password').val();
 	jsonData.mobile = $('#mobile').val();
 	jsonData.expiryDate = $('#expiryDate').val();
+	jsonData.resellerBusiness = $('#resellerBusiness').val();
 	
 	jsonData.systemadmin = $('#systemadmin').is(":checked");
 	jsonData.owner = $('#owner').is(":checked");
@@ -219,6 +253,7 @@ function deleteData(selectedId){
 $(document).ready(function(){
 
 	loadTableData();
+	loadAvailableResellerBusinessData();
 
 	$('.modal-close').off('click').on('click', function(e){
 		e.preventDefault();
@@ -243,5 +278,32 @@ $(document).ready(function(){
 		e.preventDefault();
 		submitForm('PUT');
 	})
+
+	//roles event
+	$('#systemadmin').off('click').on('click', function(e){
+		$('#owner').prop('checked', false);
+		$('#reseller').prop('checked', false);
+		$('#customer').prop('checked', false);
+		$('.resellerDropdown').addClass('nodisplay');
+	})
+	$('#owner').off('click').on('click', function(e){
+		$('#systemadmin').prop('checked', false);
+		$('#reseller').prop('checked', false);
+		$('#customer').prop('checked', false);
+		$('.resellerDropdown').addClass('nodisplay');
+	})
+	$('#reseller').off('click').on('click', function(e){
+		$('#owner').prop('checked', false);
+		$('#systemadmin').prop('checked', false);
+		$('#customer').prop('checked', false);
+		$('.resellerDropdown').removeClass('nodisplay');
+	})
+	$('#customer').off('click').on('click', function(e){
+		$('#owner').prop('checked', false);
+		$('#reseller').prop('checked', false);
+		$('#systemadmin').prop('checked', false);
+		$('.resellerDropdown').addClass('nodisplay');
+	})
+	
 
 })
