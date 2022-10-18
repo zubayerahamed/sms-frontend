@@ -25,6 +25,7 @@ public class UserResDTO {
 	private boolean owner;
 	private boolean reseller;
 	private boolean customer;
+	private boolean general;
 
 	private String roles;
 }

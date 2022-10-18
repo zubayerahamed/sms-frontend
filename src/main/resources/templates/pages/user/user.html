@@ -70,7 +70,7 @@
 
 
 		<!-- Modal -->
-		<div id="myModal" class="modal fade" role="dialog">
+		<div id="myModal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="true">
 			<div class="modal-dialog">
 	
 				<!-- Modal content-->
@@ -115,7 +115,7 @@
 							</div>
 							<hr/>
 							<div class="form-group">
-								<label>Role:</label> 
+								<label>Role:</label> <span class="text-danger pull-right">(Note: Role can't be updated)</span>
 								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN')">
 									<label><input type="checkbox" id="systemadmin" name="systemadmin"> System Admin?</label>
 								</div>
@@ -132,6 +132,9 @@
 								</div>
 								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER', 'ROLE_RESELLER')">
 									<label><input type="checkbox" id="customer" name="customer"> Customer?</label>
+								</div>
+								<div class="checkbox">
+									<label><input type="checkbox" id="general" name="general"> General?</label>
 								</div>
 							</div>
 						</form>

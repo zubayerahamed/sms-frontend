@@ -27,8 +27,10 @@ function loadTableData(){
 					role = "Owner";
 				} else if (d.reseller){
 					role = "Reseller";
-				} else {
+				} else if (d.customer){
 					role = "Customer";
+				} else {
+					role = "General";
 				}
 
 				t.row.add([
@@ -43,7 +45,6 @@ function loadTableData(){
 					'<div class="btn-group pull-right">'+
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-view">View</button>' + 
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-primary btn-edit">Edit</button>' +
-						'<button data-id="'+ d.id +'" class="btn btn-xs btn-danger btn-delete">Delete</button>'+
 					'</div>'
 				]).draw(false);
 
@@ -96,11 +97,6 @@ function setTableButtonEvents(table){
 	table.rows().every(function(index, element) {
 		var row = $(this.node());
 
-		$(row).find('.btn-delete').off('click').on('click', function(e){
-			e.preventDefault();
-			deleteData($(this).data('id'));
-		})
-
 		$(row).find('.btn-edit').off('click').on('click', function(e){
 			e.preventDefault();
 
@@ -149,6 +145,7 @@ function setSelectedDataToForm(selectedId){
 	$('#owner').prop("checked", sObj.owner);
 	$('#reseller').prop("checked", sObj.reseller);
 	$('#customer').prop("checked", sObj.customer);
+	$('#general').prop("checked", sObj.general);
 	
 	$('#active').prop("checked", sObj.active);
 	$('#locked').prop("checked", sObj.locked);
@@ -164,6 +161,8 @@ function resetModal(){
 
 function restForm(){
 	$('#mainform').trigger("reset");
+	$('.resellerDropdown').addClass('nodisplay');
+	$('#id').val("");
 }
 
 function submitForm(method){
@@ -184,6 +183,7 @@ function submitForm(method){
 	jsonData.owner = $('#owner').is(":checked");
 	jsonData.reseller = $('#reseller').is(":checked");
 	jsonData.customer = $('#customer').is(":checked");
+	jsonData.general = $('#general').is(":checked");
 	
 	jsonData.active = $('#active').is(":checked");
 	jsonData.locked = $('#locked').is(":checked");
@@ -221,35 +221,6 @@ function submitForm(method){
 	});
 }
 
-function deleteData(selectedId){
-	if(confirm("Are you want to delete this item!")){
-		loadingMask2.show();
-		$.ajax({
-			url : getApiBasepath() + "/user/" + selectedId,
-			type : 'DELETE',
-			dataType : 'json',
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-				xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
-			},
-			success : function(data) {
-				loadingMask2.hide();
-				if(data.success){
-					showMessage('success', data.message);
-					loadTableData();
-				} else {
-					showMessage('error', data.message);
-				}
-			}, 
-			error : function(jqXHR, status, errorThrown){
-				loadingMask2.hide();
-				showMessage(status, "Something went wrong .... ");
-			}
-		});
-	}
-}
-
 $(document).ready(function(){
 
 	loadTableData();
@@ -284,26 +255,35 @@ $(document).ready(function(){
 		$('#owner').prop('checked', false);
 		$('#reseller').prop('checked', false);
 		$('#customer').prop('checked', false);
+		$('#general').prop('checked', false);
 		$('.resellerDropdown').addClass('nodisplay');
 	})
 	$('#owner').off('click').on('click', function(e){
 		$('#systemadmin').prop('checked', false);
 		$('#reseller').prop('checked', false);
 		$('#customer').prop('checked', false);
+		$('#general').prop('checked', false);
 		$('.resellerDropdown').addClass('nodisplay');
 	})
 	$('#reseller').off('click').on('click', function(e){
 		$('#owner').prop('checked', false);
 		$('#systemadmin').prop('checked', false);
 		$('#customer').prop('checked', false);
+		$('#general').prop('checked', false);
 		$('.resellerDropdown').removeClass('nodisplay');
 	})
 	$('#customer').off('click').on('click', function(e){
 		$('#owner').prop('checked', false);
 		$('#reseller').prop('checked', false);
 		$('#systemadmin').prop('checked', false);
+		$('#general').prop('checked', false);
 		$('.resellerDropdown').addClass('nodisplay');
 	})
-	
-
+	$('#general').off('click').on('click', function(e){
+		$('#owner').prop('checked', false);
+		$('#reseller').prop('checked', false);
+		$('#systemadmin').prop('checked', false);
+		$('#customer').prop('checked', false);
+		$('.resellerDropdown').addClass('nodisplay');
+	})
 })

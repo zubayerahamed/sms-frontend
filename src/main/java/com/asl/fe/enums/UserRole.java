@@ -9,6 +9,7 @@ public enum UserRole {
 	ROLE_SYSTEM_ADMIN("System Admin"), 
 	ROLE_OWNER("Owner"), 
 	ROLE_RESELLER("Reseller"), 
+	ROLE_GENERAL("General"), 
 	ROLE_CUSTOMER("Customer");
 
 	private String des;

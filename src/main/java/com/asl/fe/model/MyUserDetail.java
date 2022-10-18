@@ -28,6 +28,7 @@ public class MyUserDetail implements UserDetails {
 	private boolean owner;
 	private boolean reseller;
 	private boolean customer;
+	private boolean general;
 	private String roles;
 	private List<GrantedAuthority> authorities;
 	private boolean enabled;
@@ -42,6 +43,7 @@ public class MyUserDetail implements UserDetails {
 		this.owner = user.isOwner();
 		this.reseller = user.isReseller();
 		this.customer = user.isCustomer();
+		this.general = user.isGeneral();
 		this.roles = user.getRoles();
 		this.authorities = Arrays.stream(roles.split(","))
 									.map(SimpleGrantedAuthority::new)

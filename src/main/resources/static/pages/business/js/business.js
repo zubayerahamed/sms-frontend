@@ -27,7 +27,6 @@ function loadTableData(){
 					'<div class="btn-group pull-right">'+
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-view">View</button>' + 
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-primary btn-edit">Edit</button>' +
-						'<button data-id="'+ d.id +'" class="btn btn-xs btn-danger btn-delete">Delete</button>'+
 					'</div>'
 				]).draw(false);
 
@@ -47,11 +46,6 @@ function loadTableData(){
 function setTableButtonEvents(table){
 	table.rows().every(function(index, element) {
 		var row = $(this.node());
-
-		$(row).find('.btn-delete').off('click').on('click', function(e){
-			e.preventDefault();
-			deleteData($(this).data('id'));
-		})
 
 		$(row).find('.btn-edit').off('click').on('click', function(e){
 			e.preventDefault();
@@ -109,6 +103,7 @@ function resetModal(){
 
 function restForm(){
 	$('#mainform').trigger("reset");
+	$('#id').val("");
 }
 
 function submitForm(method){
@@ -152,35 +147,6 @@ function submitForm(method){
 			showMessage(status, "Something went wrong .... ");
 		}
 	});
-}
-
-function deleteData(selectedId){
-	if(confirm("Are you want to delete this item!")){
-		loadingMask2.show();
-		$.ajax({
-			url : getApiBasepath() + "/business/" + selectedId,
-			type : 'DELETE',
-			dataType : 'json',
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-				xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
-			},
-			success : function(data) {
-				loadingMask2.hide();
-				if(data.success){
-					showMessage('success', data.message);
-					loadTableData();
-				} else {
-					showMessage('error', data.message);
-				}
-			}, 
-			error : function(jqXHR, status, errorThrown){
-				loadingMask2.hide();
-				showMessage(status, "Something went wrong .... ");
-			}
-		});
-	}
 }
 
 $(document).ready(function(){

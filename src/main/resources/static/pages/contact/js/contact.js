@@ -106,6 +106,7 @@ function resetModal(){
 
 function restForm(){
 	$('#mainform').trigger("reset");
+	$('#id').val("");
 }
 
 function submitForm(method){

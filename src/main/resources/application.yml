@@ -1,4 +1,4 @@
 server:
-  port: 8082
+  port: 2022
 api: 
-  baseUrl: http://localhost:8081/sms
+  baseUrl: http://localhost:2021/sms

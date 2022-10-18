@@ -22,6 +22,7 @@ public class User {
 	private boolean owner;
 	private boolean reseller;
 	private boolean customer;
+	private boolean general;
 	private String roles;
 	private boolean enabled;
 	private boolean locked;
@@ -33,6 +34,7 @@ public class User {
 		if(Boolean.TRUE.equals(owner)) roles += UserRole.ROLE_OWNER.name() + ',';
 		if(Boolean.TRUE.equals(reseller)) roles += UserRole.ROLE_RESELLER.name() + ',';
 		if(Boolean.TRUE.equals(customer)) roles += UserRole.ROLE_CUSTOMER.name() + ',';
+		if(Boolean.TRUE.equals(general)) roles += UserRole.ROLE_GENERAL.name() + ',';
 
 		if(StringUtils.isBlank(roles)) return roles;
 
