@@ -3,9 +3,13 @@ package com.asl.fe.controller;
 import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.asl.fe.config.AppConfig;
+import com.asl.fe.model.Business;
+import com.asl.fe.model.MyUserDetail;
 import com.asl.fe.service.ASLSessionManager;
 
 /**
@@ -28,5 +32,33 @@ public class AbstractController {
 	@ModelAttribute("jsonToken")
 	public String getJsonToken() {
 		return (String) sessionManager.getFromMap(JSON_TOKEN);
+	}
+
+	@ModelAttribute("business")
+	protected Business loggedInBusiness() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth == null || !auth.isAuthenticated()) return null;
+
+		Object principal = auth.getPrincipal();
+		if(principal instanceof MyUserDetail) {
+			MyUserDetail mud = (MyUserDetail) principal;
+			return mud.getBusiness();
+		}
+
+		return null;
+	}
+
+	@ModelAttribute("loggedInUser")
+	protected MyUserDetail loggedInUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth == null || !auth.isAuthenticated()) return null;
+
+		Object principal = auth.getPrincipal();
+		if(principal instanceof MyUserDetail) {
+			MyUserDetail mud = (MyUserDetail) principal;
+			return mud;
+		}
+
+		return null;
 	}
 }

@@ -1,119 +1,67 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
+	<head>
 
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
 
-<title>Login</title>
+		<title>Login</title>
 
-<!-- Bootstrap Core CSS -->
-<link th:href="@{/assets/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+		<link th:href="@{/assets/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+		<link th:href="@{/assets/css/metisMenu.min.css}" rel="stylesheet">
+		<link th:href="@{/assets/css/sb-admin-2.css}" rel="stylesheet">
+		<link th:href="@{/assets/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
 
-<!-- MetisMenu CSS -->
-<link th:href="@{/assets/css/metisMenu.min.css}" rel="stylesheet">
+	</head>
 
-<!-- Custom CSS -->
-<link th:href="@{/assets/css/sb-admin-2.css}" rel="stylesheet">
+	<body>
+		<!-- hidden fields -->
+		<input type="hidden" id="apiBaseUrl" th:value="${apiBaseUrl}"/>
+		<a th:href="@{/}" id="baseUrl"></a>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
 
-<!-- Custom Fonts -->
-<link th:href="@{/assets/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+					<div class="login-panel panel panel-default" style="box-shadow: 0px 0px 10px #DDD;">
+						<div class="panel-heading" style="text-align: center;">
+							<h2 class="panel-title">
+								<i class="fa fa-key"></i> Please Sign In
+							</h2>
+						</div>
+						<div class="panel-body">
+							<form role="form" th:action="@{/login}" method="post" autocomplete="off">
+								<fieldset>
+									<div th:if="${param.error}" style="color: red; margin-bottom: 10px; text-align: center; margin-top: -10px;">Wrong credential</div>
+									<div th:if="${param.logout}" style="color: #fff; margin-bottom: 10px; text-align: center; margin-top: -10px;">You have been logged out</div>
 
-</head>
-
-<body>
-	<!-- hidden fields -->
-	<input type="hidden" id="apiBaseUrl" th:value="${apiBaseUrl}"/>
-	<a th:href="@{/}" id="baseUrl"></a>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4 col-md-offset-4">
-
-				<div class="login-panel panel panel-default" style="box-shadow: 0px 0px 10px #DDD;">
-					<div class="panel-heading" style="text-align: center;">
-						<h2 class="panel-title">
-							<i class="fa fa-key"></i> Please Sign In
-						</h2>
+									<div class="input-group">
+										<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span> 
+										<input id="username" type="text" class="form-control" name="username" placeholder="Username">
+									</div>
+									<div class="input-group" style="margin-top: 15px;">
+										<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
+										<input id="password" type="password" class="form-control" name="password" placeholder="Password">
+									</div>
+									<!-- Change this to a button or input when using this as a form -->
+									<button type="submit" class="btn btn-success btn-block login-btn" style="margin-top: 10px;"><i class="fa fa-sign-in"></i> Login</button>
+								</fieldset>
+							</form>
+						</div>
+						
 					</div>
-					<div class="panel-body">
-						<form role="form" th:action="@{/login}" method="post" autocomplete="off">
-							<fieldset>
-								<div th:if="${param.error}" style="color: red; margin-bottom: 10px; text-align: center; margin-top: -10px;">Wrong credential</div>
-								<div th:if="${param.logout}" style="color: #fff; margin-bottom: 10px; text-align: center; margin-top: -10px;">You have been logged out</div>
-
-								<div class="input-group">
-									<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span> 
-									<input id="username" type="text" class="form-control" name="username" placeholder="Username/Email">
-								</div>
-								<div class="input-group" style="margin-top: 15px;">
-									<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
-									<input id="password" type="password" class="form-control" name="password" placeholder="Password">
-								</div>
-								<!-- Change this to a button or input when using this as a form -->
-								<button type="submit" class="btn btn-success btn-block login-btn" style="margin-top: 10px;"><i class="fa fa-sign-in"></i> Login</button>
-							</fieldset>
-						</form>
-					</div>
-					
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<!-- jQuery -->
-	<script th:src="@{/assets/js/jquery.min.js}"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script th:src="@{/assets/js/bootstrap.min.js}"></script>
-
-	<!-- Metis Menu Plugin JavaScript -->
-	<script th:src="@{/assets/js/metisMenu.min.js}"></script>
-
-	<!-- Custom Theme JavaScript -->
-	<script th:src="@{/assets/js/sb-admin-2.js}"></script>
-
-	<!-- <script type="text/javascript">
-		$(document).ready(function(){
-
-			$('.login-btn').off('click').on('click', function(e){
-				e.preventDefault();
-
-				var username = $('#username').val();
-				var password = $('#password').val();
-
-				var queryString = {};
-				queryString.username = username;
-				queryString.password = password;
-
-				$.ajax({
-					url : $("#apiBaseUrl").val() + "/authenticate/token",
-					type : 'POST',
-					dataType : 'json',
-					data: JSON.stringify(queryString),
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader("Accept", "application/json");
-						xhr.setRequestHeader("Content-Type", "application/json");
-					},
-					success : function(data) {
-						if(data.success == true){
-							window.location.replace($('#baseUrl').attr('href') + "home?token=" + data.obj.token);
-						} else {
-							alert(data.message);
-						}
-					}, 
-					error : function(jqXHR, status, errorThrown){
-						alert("Something went wrong .... ");
-					}
-				});
-				
-			})
-
-		})
-	</script> -->
-</body>
+		<!-- jQuery -->
+		<script th:src="@{/assets/js/jquery.min.js}"></script>
+		<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+		<script th:src="@{/assets/js/metisMenu.min.js}"></script>
+		<script th:src="@{/assets/js/sb-admin-2.js}"></script>
+	</body>
 
 </html>

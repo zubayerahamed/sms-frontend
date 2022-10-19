@@ -140,13 +140,25 @@ function setSelectedDataToForm(selectedId){
 	$('#password').val(sObj.password);
 	$('#mobile').val(sObj.mobile);
 	$('#expiryDate').val(sObj.expiryDate);
-	
+
 	$('#systemadmin').prop("checked", sObj.systemadmin);
 	$('#owner').prop("checked", sObj.owner);
 	$('#reseller').prop("checked", sObj.reseller);
+	if(sObj.reseller){
+		$('.resellerDropdown').removeClass('nodisplay');
+		var mySelect = $('#resellerBusiness');
+		mySelect.empty();
+		mySelect.append(
+			$('<option></option>').val(sObj.business.id).html(sObj.business.name)
+		);
+	} else {
+		$('.resellerDropdown').addClass('nodisplay');
+		var mySelect = $('#resellerBusiness');
+		mySelect.empty();
+	}
 	$('#customer').prop("checked", sObj.customer);
 	$('#general').prop("checked", sObj.general);
-	
+
 	$('#active').prop("checked", sObj.active);
 	$('#locked').prop("checked", sObj.locked);
 }
@@ -178,17 +190,15 @@ function submitForm(method){
 	jsonData.mobile = $('#mobile').val();
 	jsonData.expiryDate = $('#expiryDate').val();
 	jsonData.resellerBusiness = $('#resellerBusiness').val();
-	
+
 	jsonData.systemadmin = $('#systemadmin').is(":checked");
 	jsonData.owner = $('#owner').is(":checked");
 	jsonData.reseller = $('#reseller').is(":checked");
 	jsonData.customer = $('#customer').is(":checked");
 	jsonData.general = $('#general').is(":checked");
-	
+
 	jsonData.active = $('#active').is(":checked");
 	jsonData.locked = $('#locked').is(":checked");
-	
-	console.log(jsonData);
 
 	loadingMask2.show();
 	$.ajax({

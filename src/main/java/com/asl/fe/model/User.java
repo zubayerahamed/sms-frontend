@@ -15,9 +15,12 @@ import lombok.Data;
 @Data
 public class User {
 
+	private Long id;
+	private String fullName;
 	private String username;
 	private String email;
 	private String password;
+	private String mobile;
 	private boolean systemadmin;
 	private boolean owner;
 	private boolean reseller;
@@ -27,6 +30,7 @@ public class User {
 	private boolean enabled;
 	private boolean locked;
 	private Date expiryDate;
+	private Business business;
 
 	public String getRoles() {
 		this.roles = "";

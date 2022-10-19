@@ -21,6 +21,8 @@ public class MyUserDetail implements UserDetails {
 
 	private static final long serialVersionUID = -2410479223343593445L;
 
+	private Long id;
+	private String fullName;
 	private String username;
 	private String password;
 	private String email;
@@ -34,8 +36,13 @@ public class MyUserDetail implements UserDetails {
 	private boolean enabled;
 	private boolean locked;
 	private Date expiryDate;
+	private Business business;
+	private String mobile;
 
 	public MyUserDetail(User user){
+		this.id = user.getId();
+		this.fullName = user.getFullName();
+		this.mobile = user.getMobile();
 		this.username = user.getUsername();
 		this.password = user.getPassword();
 		this.email = user.getEmail();
@@ -45,12 +52,17 @@ public class MyUserDetail implements UserDetails {
 		this.customer = user.isCustomer();
 		this.general = user.isGeneral();
 		this.roles = user.getRoles();
+		this.business = user.getBusiness();
 		this.authorities = Arrays.stream(roles.split(","))
 									.map(SimpleGrantedAuthority::new)
 									.collect(Collectors.toList());
 		this.enabled = user.isEnabled();
 		this.locked = user.isLocked();
 		this.expiryDate = user.getExpiryDate();
+	}
+
+	public Long getId() {
+		return this.id;
 	}
 
 	@Override
@@ -90,6 +102,22 @@ public class MyUserDetail implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return this.enabled;
+	}
+
+	public Business getBusiness() {
+		return this.business;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public String getMobile() {
+		return mobile;
 	}
 
 }

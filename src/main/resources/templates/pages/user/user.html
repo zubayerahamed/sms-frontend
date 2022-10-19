@@ -71,7 +71,7 @@
 
 		<!-- Modal -->
 		<div id="myModal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="true">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-lg">
 	
 				<!-- Modal content-->
 				<div class="modal-content">
@@ -83,58 +83,66 @@
 
 						<form id="mainform" th:with="df=${'yyyy-MM-dd'}">
 							<input type="hidden" class="form-control" id="id" name="id">
-							<div class="form-group">
-								<label for="fullName">Full Name:</label> 
-								<input type="text" class="form-control" id="fullName" name="fullName" required="required">
-							</div>
-							<div class="form-group">
-								<label for="username">User Name:</label> 
-								<input type="text" class="form-control" id="username" name="username" required="required">
-							</div>
-							<div class="form-group">
-								<label for="email">Email address:</label> 
-								<input type="email" class="form-control" id="email" name="email" required="required">
-							</div>
-							<div class="form-group">
-								<label for="username">Password:</label> 
-								<input type="password" class="form-control" id="password" name="password">
-							</div>
-							<div class="form-group">
-								<label for="mobile">Mobile:</label> 
-								<input type="text" class="form-control" id="mobile" name="mobile">
-							</div>
-							<div class="form-group">
-								<label for="expiryDate">Expiry Date:</label> 
-								<input type="date" class="form-control" id="expiryDate" name="expiryDate" th:value="${expDate == null ? #dates.format(#dates.createNow(), df) : #dates.format(expDate, df)}" >
-							</div>
-							<div class="checkbox">
-								<label><input type="checkbox" id="active" name="active"> Active?</label>
-							</div>
-							<div class="checkbox">
-								<label><input type="checkbox" id="locked" name="locked"> Locked?</label>
-							</div>
-							<hr/>
-							<div class="form-group">
-								<label>Role:</label> <span class="text-danger pull-right">(Note: Role can't be updated)</span>
-								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN')">
-									<label><input type="checkbox" id="systemadmin" name="systemadmin"> System Admin?</label>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="fullName">Full Name:</label> 
+										<input type="text" class="form-control" id="fullName" name="fullName" required="required">
+									</div>
+									<div class="form-group">
+										<label for="username">User Name:</label> 
+										<input type="text" class="form-control" id="username" name="username" required="required">
+									</div>
+									<div class="form-group">
+										<label for="email">Email address:</label> 
+										<input type="email" class="form-control" id="email" name="email" required="required">
+									</div>
+									<div class="form-group">
+										<label for="username">Password:</label> 
+										<input type="password" class="form-control" id="password" name="password">
+									</div>
+									<div class="form-group">
+										<label for="mobile">Mobile:</label> 
+										<input type="text" class="form-control" id="mobile" name="mobile">
+									</div>
+									<div class="form-group">
+										<label for="expiryDate">Expiry Date:</label> 
+										<input type="date" class="form-control" id="expiryDate" name="expiryDate" th:value="${expDate == null ? #dates.format(#dates.createNow(), df) : #dates.format(expDate, df)}" >
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" id="active" name="active"> Active?</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" id="locked" name="locked"> Locked?</label>
+									</div>
 								</div>
-								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN')">
-									<label><input type="checkbox" id="owner" name="owner"> Owner?</label>
-								</div>
-								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER')">
-									<label><input type="checkbox" id="reseller" name="reseller"> Resellter?</label>
-								</div>
-								<div class="form-group nodisplay resellerDropdown">
-									<label for="resellerBusiness">Reseller Business:</label> 
-									<select class="form-control" id="resellerBusiness" name="resellerBusiness">
-									</select>
-								</div>
-								<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER', 'ROLE_RESELLER')">
-									<label><input type="checkbox" id="customer" name="customer"> Customer?</label>
-								</div>
-								<div class="checkbox">
-									<label><input type="checkbox" id="general" name="general"> General?</label>
+								<div class="col-md-6">
+									<div class="form-group">
+										<span class="text-danger">Note: You can select only one Role and Role can't be updated</span>
+										<hr/>
+										<label>Role:</label>
+										<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN')">
+											<label><input type="checkbox" id="systemadmin" name="systemadmin"> System Admin?</label>
+										</div>
+										<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN')">
+											<label><input type="checkbox" id="owner" name="owner"> Owner?</label>
+										</div>
+										<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER')">
+											<label><input type="checkbox" id="reseller" name="reseller"> Resellter?</label>
+										</div>
+										<div class="form-group nodisplay resellerDropdown">
+											<label for="resellerBusiness">Reseller Business:</label> 
+											<select class="form-control" id="resellerBusiness" name="resellerBusiness">
+											</select>
+										</div>
+										<div class="checkbox" sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER', 'ROLE_RESELLER')">
+											<label><input type="checkbox" id="customer" name="customer"> Customer?</label>
+										</div>
+										<div class="checkbox">
+											<label><input type="checkbox" id="general" name="general"> General?</label>
+										</div>
+									</div>
 								</div>
 							</div>
 						</form>

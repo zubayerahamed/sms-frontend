@@ -1,4 +1,4 @@
 server:
   port: 2022
 api: 
-  baseUrl: http://localhost:2021/sms
+  baseUrl: http://194.233.75.134:2021/sms
