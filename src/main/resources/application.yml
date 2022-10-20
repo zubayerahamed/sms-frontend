@@ -1,4 +1,11 @@
 server:
   port: 2022
+spring:
+  profiles:
+    active: dev
+  banner:
+    location: banner.txt
+default: 
+  logging-path: D:/ASL/SMS-FRONTEND/logs 
 api: 
   baseUrl: http://localhost:2021/sms
