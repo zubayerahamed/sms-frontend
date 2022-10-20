@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.asl.fe</groupId>
 	<artifactId>sms-frontend</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<name>sms-frontend</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
