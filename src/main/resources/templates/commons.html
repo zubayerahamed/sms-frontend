@@ -345,7 +345,7 @@
 		<!-- /.navbar-header -->
 
 		<ul class="nav navbar-top-links navbar-right">
-			<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+			<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i> <span th:text="${loggedInUser.fullName}"></span> <i class="fa fa-caret-down"></i>
 			</a>
 				<ul class="dropdown-menu dropdown-user">
 					<li><a th:href="@{/myprofile}"><i class="fa fa-user fa-fw"></i> My Profile</a></li>
@@ -367,9 +367,9 @@
 					<li><a th:href="@{/template}"><i class="fa fa-file-text-o fa-fw"></i> SMS Template</a></li>
 					<li><a th:href="@{/single-sms}"><i class="fa fa-comment fa-fw"></i> Single SMS</a></li>
 					<li><a th:href="@{/bulk-sms}"><i class="fa fa-comments fa-fw"></i> Bulk SMS</a></li>
-					<li sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER')"><a th:href="@{/supplier}"><i class="fa fa-user fa-fw"></i> Supplier</a></li>
-					<li sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER')"><a th:href="@{/po}"><i class="fa fa-user fa-fw"></i> Purchase Order</a></li>
-					<li sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER', 'ROLE_RESELLER')"><a th:href="@{/product}"><i class="fa fa-user fa-fw"></i> Product</a></li>
+					<li sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER')"><a th:href="@{/supplier}"><i class="fa fa-truck"></i> Supplier</a></li>
+					<li sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER')"><a th:href="@{/po}"><i class="fa fa-shopping-cart"></i> Purchase Order</a></li>
+					<li sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_OWNER', 'ROLE_RESELLER')"><a th:href="@{/product}"><i class="glyphicon glyphicon-apple"></i> Product</a></li>
 				</ul>
 			</div>
 			<!-- /.sidebar-collapse -->
