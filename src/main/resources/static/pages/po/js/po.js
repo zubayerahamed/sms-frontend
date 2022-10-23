@@ -187,6 +187,7 @@ function submitForm(method){
 				showMessage('success', data.message);
 				if(method == 'POST'){
 					restForm();
+					resetModal();
 				}
 				loadTableData();
 			} else {
