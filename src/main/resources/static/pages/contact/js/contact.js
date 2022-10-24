@@ -1,46 +1,78 @@
 var tableData = [];
 
 function loadTableData(){
-	loadingMask2.show();
-	$.ajax({
-		url : getApiBasepath() + "/contact",
-		type : 'GET',
-		dataType : 'json',
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-			xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
+	//loadingMask2.show();
+	
+	var db = $('.contact-datatable').DataTable({
+		"processing" : true,
+		"serverSide" : true,
+		"stateSave" : true,
+		"columnDefs": [
+			{ "name": "name",   "targets": 0 },
+			{ "name": "email",  "targets": 1 },
+			{ "name": "mobile",  "targets": 2 },
+			{ "name": "active",  "targets": 3 }
+		],
+		"ajax" : {
+			'url' : getApiBasepath() + "/contact",
+			'beforeSend' : function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+				xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
+			},
+			success : function(data) {
+				console.log(data);
+				db.data = data.pageableObj
+			}
 		},
-		success : function(data) {
-			loadingMask2.hide();
-
-			tableData = [];
-			var t = $('.datatable').DataTable();
-			t.clear().draw();
-			$.each(data.items, function(i, d){
-				t.row.add([
-					d.name, 
-					d.email, 
-					d.mobile, 
-					d.active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>', 
-					'<div class="btn-group pull-right">'+
-						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-view">View</button>' + 
-						'<button data-id="'+ d.id +'" class="btn btn-xs btn-primary btn-edit">Edit</button>' +
-						'<button data-id="'+ d.id +'" class="btn btn-xs btn-danger btn-delete">Delete</button>'+
-					'</div>'
-				]).draw(false);
-
-				tableData.push(d);
-			})
-
-			setTableButtonEvents(t);
-
-		}, 
-		error : function(jqXHR, status, errorThrown){
-			loadingMask2.hide();
-			showMessage(status, "Something went wrong .... ");
-		}
+		"columns": [
+			{ "data": "name" },
+			{ "data": "email" },
+			{ "data": "mobile" },
+			{ "data": "active" }
+		]
 	});
+	
+	
+//	$.ajax({
+//		url : getApiBasepath() + "/contact",
+//		type : 'GET',
+//		dataType : 'json',
+//		beforeSend: function(xhr) {
+//			xhr.setRequestHeader("Accept", "application/json");
+//			xhr.setRequestHeader("Content-Type", "application/json");
+//			xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
+//		},
+//		success : function(data) {
+//			loadingMask2.hide();
+//
+//			tableData = [];
+//			var t = $('.datatable').DataTable();
+//			t.clear().draw();
+//			$.each(data.items, function(i, d){
+//				t.row.add([
+//					d.name, 
+//					d.email, 
+//					d.mobile, 
+//					d.active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>', 
+//					'<div class="btn-group pull-right">'+
+//						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-view">View</button>' + 
+//						'<button data-id="'+ d.id +'" class="btn btn-xs btn-primary btn-edit">Edit</button>' +
+//						'<button data-id="'+ d.id +'" class="btn btn-xs btn-danger btn-delete">Delete</button>'+
+//					'</div>'
+//				]).draw(false);
+//
+//				tableData.push(d);
+//			})
+//
+//			setTableButtonEvents(t);
+//
+//		}, 
+//		error : function(jqXHR, status, errorThrown){
+//			loadingMask2.hide();
+//			showMessage(status, "Something went wrong .... ");
+//		}
+//	});
 }
 
 function setTableButtonEvents(table){
