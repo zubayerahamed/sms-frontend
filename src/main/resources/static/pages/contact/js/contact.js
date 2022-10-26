@@ -14,15 +14,11 @@ function loadTableData(){
 			{ "name": "active",  "targets": 3 }
 		],
 		"ajax" : {
-			'url' : getApiBasepath() + "/contact",
+			'url' : getApiBasepath() + "/contact/pageable",
 			'beforeSend' : function(xhr) {
 				xhr.setRequestHeader("Accept", "application/json");
 				xhr.setRequestHeader("Content-Type", "application/json");
 				xhr.setRequestHeader("Authorization", 'Bearer '+ getApiToken());
-			},
-			success : function(data) {
-				console.log(data);
-				db.data = data.pageableObj
 			}
 		},
 		"columns": [
