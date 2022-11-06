@@ -81,6 +81,56 @@
 								<label for="name">Name:</label> 
 								<input type="text" class="form-control" id="name" name="name" required="required">
 							</div>
+							<div class="form-group">
+								<label for="smsQuantity">SMS Quantity:</label> 
+								<input type="number" class="form-control" id="smsQuantity" name="smsQuantity" required="required" min="1">
+							</div>
+							<div class="form-group">
+								<label for="price">Price:</label> 
+								<input type="number" class="form-control" id="price" name="price" required="required" min="0">
+							</div>
+							<div class="form-group">
+								<label for="vatRate">Vat Rate (%):</label> 
+								<input type="number" class="form-control" id="vatRate" name="vatRate" required="required" min="0">
+							</div>
+							<div class="form-group">
+								<label for="vatAmount">Vat Amount:</label> 
+								<input type="number" class="form-control" id="vatAmount" name="vatAmount" required="required" readonly="readonly">
+							</div>
+							<div class="form-group">
+								<label for="discountType">Discount Type:</label> 
+								<select class="form-control" id="discountType" name="discountType">
+									<option></option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="discountRate">Discount Rate (%):</label> 
+								<input type="number" class="form-control" id="discountRate" name="discountRate">
+							</div>
+							<div class="form-group">
+								<label for="discountAmount">Discount Amount:</label> 
+								<input type="number" class="form-control" id="discountAmount" name="discountAmount">
+							</div>
+							<div class="form-group">
+								<label for="finalPrice">Final price:</label> 
+								<input type="number" class="form-control" id="finalPrice" name="finalPrice">
+							</div>
+							<div class="form-group">
+								<label for="validity">Validity Days:</label> 
+								<input type="number" class="form-control" id="validity" name="validity">
+							</div>
+							<div class="checkbox">
+								<label><input type="checkbox" id="unlimitedValidity" name="unlimitedValidity"> Unlimited Validity?</label>
+							</div>
+							<div class="checkbox">
+								<label><input type="checkbox" id="sellable" name="sellable"> Sellable Item?</label>
+							</div>
+							<div class="checkbox">
+								<label><input type="checkbox" id="allowPromotion" name="allowPromotion"> Promotion Allowed?</label>
+							</div>
+							<div class="checkbox">
+								<label><input type="checkbox" id="locked" name="locked"> Locked?</label>
+							</div>
 							<div class="checkbox">
 								<label><input type="checkbox" id="active" name="active"> Active?</label>
 							</div>
