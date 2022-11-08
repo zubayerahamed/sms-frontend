@@ -181,9 +181,40 @@ function deleteData(selectedId){
 	}
 }
 
+
+function updateDiscountSection(){
+	$('#discountRate').val(0);
+	$('#discountAmount').val(0);
+
+	var discountType = $('#discountType').val();
+	if(discountType == 'NONE'){
+		$('#discountRate').attr('readonly', 'readonly');
+		$('#discountAmount').attr('readonly', 'readonly');
+	} else if (discountType == 'FLAT'){
+		$('#discountRate').attr('readonly', 'readonly');
+		$('#discountAmount').removeAttr('readonly');
+	} else {
+		$('#discountRate').removeAttr('readonly');
+		$('#discountAmount').attr('readonly', 'readonly');
+	}
+}
+
+function updateDiscountAmount(){
+	
+}
+
 $(document).ready(function(){
 
 	loadTableData();
+
+	updateDiscountSection();
+	$('#discountType').off('change').on('change', function(e){
+		updateDiscountSection();
+	})
+	$('#discountRate').off('blur').on('blur', function(e){
+		updateDiscountAmount();
+	})
+
 
 	$('.modal-close').off('click').on('click', function(e){
 		e.preventDefault();
