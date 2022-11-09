@@ -20,9 +20,11 @@ function loadTableData(){
 			$.each(data.items, function(i, d){
 				t.row.add([
 					'<div>'+
-						'<h3>' + d.name + '</h3>' +
+						'<h2 style="margin: 0; padding: 5px 0px;">' + d.name + '</h2>' +
+						'<h4 style="margin: 0; padding: 5px 0px;">SMS Quantity : ' + d.smsQuantity + '</h4>' +
+						'<span style="margin: 0; padding: 5px 0px;">Validity : ' + d.validity + ' Days</span>' +
+						'<span style="margin: 0; padding: 5px 0px; font-weight: bold;" class="text-success pull-right">Price : ' + d.finalPrice + ' TK</span>' +
 					'</div>', 
-					d.active ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>', 
 					'<div class="btn-group pull-right">'+
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-default btn-view">View</button>' + 
 						'<button data-id="'+ d.id +'" class="btn btn-xs btn-primary btn-edit">Edit</button>' +
@@ -56,7 +58,7 @@ function setTableButtonEvents(table){
 			e.preventDefault();
 
 			$('#myModal').modal('show');
-			$('.modal-title').html("Update Template");
+			$('.modal-title').html("Update Product");
 			$('.form-reset').removeClass('nodisplay');
 			$('.form-update').removeClass('nodisplay');
 			$('.form-submit').addClass('nodisplay');
@@ -68,7 +70,7 @@ function setTableButtonEvents(table){
 			e.preventDefault();
 
 			$('#myModal').modal('show');
-			$('.modal-title').html("SMS Template");
+			$('.modal-title').html("Product");
 			$('.form-update').addClass('nodisplay');
 			$('.form-submit').addClass('nodisplay');
 			$('.form-reset').addClass('nodisplay');
@@ -90,15 +92,33 @@ function setSelectedDataToForm(selectedId){
 	})
 
 	$('#id').val(sObj.id);
-	$('#name').val(sObj.name)
-	$('#content').val(sObj.content);
+	$('#name').val(sObj.name);
+	$('#smsQuantity').val(sObj.smsQuantity);
+	$('#price').val(sObj.price);
+	$('#vatRate').val(sObj.vatRate);
+	$('#vatAmount').val(sObj.vatAmount);
+	$('#discountType').val(sObj.discountType);
+	$('#discountRate').val(sObj.discountRate);
+	$('#discountAmount').val(sObj.discountAmount);
+	$('#finalPrice').val(sObj.finalPrice);
+	$('#validity').val(sObj.validity);
 
+	$('#unlimitedValidity').prop("checked", sObj.unlimitedValidity);
+	$('#sellable').prop("checked", sObj.sellable);
+	$('#allowPromotion').prop("checked", sObj.allowPromotion);
+	$('#resellerOnly').prop("checked", sObj.resellerOnly);
+	$('#locked').prop("checked", sObj.locked);
 	$('#active').prop("checked", sObj.active);
+
+	updateVatAmount();
+	updateDiscountSection();
+	updateDiscountAmount();
+	updateFinalPrice();
 }
 
 function resetModal(){
 	$('#myModal').modal('hide');
-	$('.modal-title').html("Create Template");
+	$('.modal-title').html("Create Product");
 	$('.form-reset').removeClass('nodisplay');
 	$('.form-update').addClass('nodisplay');
 	$('.form-submit').removeClass('nodisplay');
@@ -116,9 +136,23 @@ function submitForm(method){
 	var jsonData = {};
 	jsonData.id = $('#id').val();
 	jsonData.name = $('#name').val();
-	jsonData.content = $('#content').val();
+	jsonData.smsQuantity = $('#smsQuantity').val();
+	jsonData.price = $('#price').val();
+	jsonData.vatRate = $('#vatRate').val();
+	jsonData.vatAmount = $('#vatAmount').val();
+	jsonData.discountType = $('#discountType').val();
+	jsonData.discountRate = $('#discountRate').val();
+	jsonData.discountAmount = $('#discountAmount').val();
+	jsonData.finalPrice = $('#finalPrice').val();
+	jsonData.validity = $('#validity').val();
+
+	jsonData.unlimitedValidity = $('#unlimitedValidity').is(":checked");
+	jsonData.sellable = $('#sellable').is(":checked");
+	jsonData.allowPromotion = $('#allowPromotion').is(":checked");
+	jsonData.resellerOnly = $('#resellerOnly').is(":checked");
+	jsonData.locked = $('#locked').is(":checked");
 	jsonData.active = $('#active').is(":checked");
-	
+
 	console.log(jsonData);
 
 	loadingMask2.show();
@@ -200,19 +234,89 @@ function updateDiscountSection(){
 }
 
 function updateDiscountAmount(){
-	
+	var price = $('#price').val();
+	if(isNaN(price)) {
+		alert("Price not a number");
+		return;
+	}
+
+	var discountRate = $('#discountRate').val();
+	if(isNaN(discountRate)) {
+		alert("Discount rate not a number");
+		return;
+	}
+
+	var discountAmt = (price * discountRate)/100;
+	$('#discountAmount').val(discountAmt);
+}
+
+function updateVatAmount(){
+	var price = $('#price').val();
+	if(isNaN(price)) {
+		alert("Price not a number");
+		return;
+	}
+
+	var vatRate = $('#vatRate').val();
+	if(isNaN(vatRate)) {
+		alert("VAT rate not a number");
+		return;
+	}
+
+	var vatAmt = (price * vatRate)/100;
+	$('#vatAmount').val(vatAmt);
+}
+
+function updateFinalPrice(){
+	$('#finalPrice').val(0);
+
+	var price = $('#price').val();
+	if(isNaN(price)) {
+		alert("Price not a number");
+		return;
+	}
+
+	var vatAmt = $('#vatAmount').val();
+	if(isNaN(vatAmt)) {
+		alert("VAT amount not a number");
+		return;
+	}
+
+	var discountAmt = $('#discountAmount').val();
+	if(isNaN(discountAmt)) {
+		alert("Discount amount not a number");
+		return;
+	}
+
+	$('#finalPrice').val(Number(price) + Number(vatAmt) - Number(discountAmt));
 }
 
 $(document).ready(function(){
 
 	loadTableData();
 
+
+	updateVatAmount();
 	updateDiscountSection();
+	updateDiscountAmount();
+	updateFinalPrice();
+	$('#vatRate').off('blur').on('blur', function(e){
+		updateVatAmount();
+		updateFinalPrice();
+	})
 	$('#discountType').off('change').on('change', function(e){
 		updateDiscountSection();
+		updateFinalPrice();
 	})
 	$('#discountRate').off('blur').on('blur', function(e){
 		updateDiscountAmount();
+		updateFinalPrice();
+	})
+	$('#discountAmount').off('blur').on('blur', function(e){
+		updateFinalPrice();
+	})
+	$('#price').off('blur').on('blur', function(e){
+		updateFinalPrice();
 	})
 
 
