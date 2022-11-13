@@ -15,4 +15,10 @@ public class AppConfig {
 
 	@Value("${api.baseUrl}")
 	private String apiBaseUrl;
+
+	@Value("${default.im-ex-path:/asl/exportimport/}")
+	private String defaultExportImportPath;
+
+	@Value("${default.temp-directory}")
+	private String appTempDir;
 }

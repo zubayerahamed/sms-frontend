@@ -7,5 +7,7 @@ spring:
     location: banner.txt
 default: 
   logging-path: D:/ASL/SMS-FRONTEND/logs 
+  im-ex-path: D:/ASL/SMS-FRONTEND/exportimport/
+  temp-directory: D:/ASL/SMS-FRONTEND/exportimport/tmp/
 api: 
   baseUrl: http://localhost:2021/sms

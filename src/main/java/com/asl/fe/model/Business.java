@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 public class Business {
 
+	private Long id;
 	private BusinessType businessType;
 	private String name;
 	private String email;
