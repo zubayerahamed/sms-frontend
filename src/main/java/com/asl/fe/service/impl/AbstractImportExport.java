@@ -30,7 +30,7 @@ public abstract class AbstractImportExport implements ImportExportService {
 
 	static final String ERROR = "Error is : {}, {}";
 	static final String IMPORT_EXPORT_PATH = "pages/importexport/importexport";
-	static final long CHUNK_LIMIT = 1000;
+	static final long CHUNK_LIMIT = 2;
 	static final String LINE_BREAK = "\r\n";
 	static final  SimpleDateFormat DATE_FORMATER_2 = new SimpleDateFormat("ddMMyyyy_HHmmssSSSSSSS");
 	static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");

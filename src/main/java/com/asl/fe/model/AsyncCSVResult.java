@@ -21,6 +21,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class AsyncCSVResult {
 
+	private String authToken;
+	private String apiBaseUrl;
+	
 	private String token;
 	private Integer progress;
 	private Boolean isWorkInProgress;

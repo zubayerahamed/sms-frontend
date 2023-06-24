@@ -3,10 +3,9 @@ package com.asl.fe.enums;
 import com.asl.fe.service.GenericImportExportColumns;
 
 public enum ContactImportExportColumns implements GenericImportExportColumns {
-	GROUP_NAME(0, "Group Name", "Column A", ImportExportColumnType.REQUIRED, "Group Name"),
-	CONTACT_NAME(1, "Contact Name", "Column B", ImportExportColumnType.REQUIRED, "Contact Name"),
-	EMAIL(2, "Email", "Column C", ImportExportColumnType.OPTIONAL, "Email Address"),
-	MOBILE(3, "Mobile Number", "Column D", ImportExportColumnType.REQUIRED, "Mobile Number");
+	CONTACT_NAME(1, "Contact Name", "Column A", ImportExportColumnType.REQUIRED, "Contact Name"),
+	MOBILE(2, "Mobile Number", "Column B", ImportExportColumnType.REQUIRED, "Mobile Number"),
+	EMAIL(3, "Email", "Column C", ImportExportColumnType.OPTIONAL, "Email Address");
 
 	private int columnIndex;
 	private String columnName;

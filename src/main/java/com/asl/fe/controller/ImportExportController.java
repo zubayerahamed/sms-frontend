@@ -64,6 +64,8 @@ public class ImportExportController extends AbstractController {
 	public void downloadTemplate(@PathVariable String module, HttpServletResponse response) throws IOException {
 		String token = UUID.randomUUID().toString();
 		AsyncCSVResult asyncCSVResult = new AsyncCSVResult()
+											.setAuthToken(getJsonToken())
+											.setApiBaseUrl(getApiBaseUrl())
 											.setHttpServletResponse(response)
 											.setLatch(new CountDownLatch(1))
 											.setToken(token)
@@ -81,6 +83,8 @@ public class ImportExportController extends AbstractController {
 	public @ResponseBody AsyncCSVResult downloadDataFromDB(@PathVariable String module, ImportExportPage exp) throws IOException {
 		String token = UUID.randomUUID().toString();
 		AsyncCSVResult asyncCSVResult = new AsyncCSVResult()
+											.setAuthToken(getJsonToken())
+											.setApiBaseUrl(getApiBaseUrl())
 											.setLatch(new CountDownLatch(1))
 											.setToken(token)
 											.setProgress(0)
@@ -181,6 +185,8 @@ public class ImportExportController extends AbstractController {
 
 		String token = UUID.randomUUID().toString();
 		AsyncCSVResult asyncCSVResult = new AsyncCSVResult()
+											.setAuthToken(getJsonToken())
+											.setApiBaseUrl(getApiBaseUrl())
 											.setUpdateExisting(updateExisting)
 											.setIgnoreHeading(ignoreHeading)
 											.setDelimeterType(delimeterType)
@@ -227,6 +233,8 @@ public class ImportExportController extends AbstractController {
 	public @ResponseBody AsyncCSVResult importProcessedCSVData(@PathVariable String module, @RequestParam String fileName) {
 		String token = UUID.randomUUID().toString();
 		AsyncCSVResult asyncCSVResult = new AsyncCSVResult()
+											.setAuthToken(getJsonToken())
+											.setApiBaseUrl(getApiBaseUrl())
 											.setLatch(new CountDownLatch(1))
 											.setToken(token)
 											.setProgress(0)
